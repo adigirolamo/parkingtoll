@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>15</java.version>
+		<springdoc.version>1.5.1</springdoc.version>
 	</properties>
 
 	<dependencies>
@@ -58,6 +59,18 @@
 			<groupId>org.springframework.restdocs</groupId>
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<!-- Documentation -->
+		<!-- SpringDoc -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 	</dependencies>
 
