@@ -2,6 +2,7 @@ package com.adigi.parkingtoll.model.persistance.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,6 +33,10 @@ public class Reservation {
 
     @Column
     private java.time.LocalDateTime localDepartureDateTime;
+
+    @Column
+    @ColumnDefault("true")
+    private Boolean payed;
 
     public Reservation() {
     }

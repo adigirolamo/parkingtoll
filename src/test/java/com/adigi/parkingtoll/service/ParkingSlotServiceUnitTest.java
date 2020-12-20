@@ -85,6 +85,14 @@ public class ParkingSlotServiceUnitTest {
         assertFalse(slots.get(1).isOccupied());
     }
 
+    //TODO updateParkingSlotToFree
+    // if parkingSlot returned
+    // setOccupied == false
+    // Check if update the test and control reservation too
+
+    //TODO updateParkingSlotToFree
+    // if not returned no error
+
     private List<ParkingSlot> createNotOccupiedParkingSlots(int num) {
 
         List<ParkingSlot> parkingSlots = new ArrayList<>(num);

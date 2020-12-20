@@ -17,17 +17,31 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
 
     /**
-     * Update plate and localArriveDateTime of parkingSlot's reservation
-     * localArriveDateTime is set as LocalDateTime.now
+     * Update Reservation for and incoming car:
+     * plate is set to the car plate
+     * payed is set to false
+     * arrival is set to now
+     * departure is set to null
      *
      * @param parkingSlot
      * @param plate
      */
-    public void updateReservationPlateAndArrival(ParkingSlot parkingSlot, String plate) {
+    public void updateReservationForIncomingCar(ParkingSlot parkingSlot, String plate) {
 
         Reservation reservation = getOrCreateParkingSlotReservation(parkingSlot);
         reservation.setPlate(plate);
+        reservation.setPayed(false);
         reservation.setLocalArriveDateTime(LocalDateTime.now());
+        reservation.setLocalDepartureDateTime(null);
+
+        reservationRepository.save(reservation);
+    }
+
+    public void updateReservationDeparture(ParkingSlot parkingSlot) {
+
+        Reservation reservation = parkingSlot.getReservation();
+
+        reservation.setLocalDepartureDateTime(LocalDateTime.now());
 
         reservationRepository.save(reservation);
     }

@@ -24,32 +24,37 @@ public class ReservationServiceUnitTest {
     @InjectMocks
     private ReservationService reservationService;
 
-    final String PLATE_OLD = "OLD";
-    final String PLATE_NEW = "NEW";
-    LocalDateTime oldTime;
+    private final String PLATE_OLD = "OLD";
+    private final String PLATE_NEW = "NEW";
+    private LocalDateTime oldTime;
+
+    private ParkingSlot parkingSlot;// = new ParkingSlot();
+    private Reservation reservation;// = new Reservation();
+//        parkingSlot.setReservation(reservation);
 
     @BeforeEach
     public void setUp() {
         oldTime = LocalDateTime.of(2000, 1, 1, 1, 1);
+        parkingSlot = new ParkingSlot();
+        reservation = new Reservation();
+        parkingSlot.setReservation(reservation);
     }
 
     @Test
     public void updateReservationPlateAndArrival_getUpdatedReservation() {
 
         // given
-        ParkingSlot parkingSlot = new ParkingSlot();
-        Reservation reservation = new Reservation();
-        parkingSlot.setReservation(reservation);
-
         reservation.setLocalArriveDateTime(oldTime);
         reservation.setPlate(PLATE_OLD);
+        reservation.setPayed(true);
 
         // method to verify
-        reservationService.updateReservationPlateAndArrival(parkingSlot, PLATE_NEW);
+        reservationService.updateReservationForIncomingCar(parkingSlot, PLATE_NEW);
 
         // verify
         assertEquals(reservation.getPlate(), PLATE_NEW);
         assertTrue(reservation.getLocalArriveDateTime().isAfter(oldTime));
+        assertFalse(reservation.getPayed());
     }
 
     @Test
@@ -63,5 +68,18 @@ public class ReservationServiceUnitTest {
 
         // verify
         assertNotNull(reservation);
+    }
+
+    @Test
+    public void updateReservationDeparture_getUpdated() {
+
+        // given
+        reservation.setLocalDepartureDateTime(oldTime);
+
+        // method to verify
+        reservationService.updateReservationDeparture(parkingSlot);
+
+        // verify
+        assertTrue(reservation.getLocalDepartureDateTime().isAfter(oldTime));
     }
 }
