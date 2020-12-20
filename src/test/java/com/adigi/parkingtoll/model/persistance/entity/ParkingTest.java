@@ -1,20 +1,17 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
 import com.adigi.parkingtoll.annotation.DataJpaTestJunit;
-import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTestJunit
 public class ParkingTest {

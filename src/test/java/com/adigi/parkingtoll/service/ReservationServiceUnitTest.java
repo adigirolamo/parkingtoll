@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class ReservationServiceUnitTest {
 
-
     @Mock
     private ReservationRepository reservationRepository;
 
@@ -28,9 +27,8 @@ public class ReservationServiceUnitTest {
     private final String PLATE_NEW = "NEW";
     private LocalDateTime oldTime;
 
-    private ParkingSlot parkingSlot;// = new ParkingSlot();
-    private Reservation reservation;// = new Reservation();
-//        parkingSlot.setReservation(reservation);
+    private ParkingSlot parkingSlot;
+    private Reservation reservation;
 
     @BeforeEach
     public void setUp() {

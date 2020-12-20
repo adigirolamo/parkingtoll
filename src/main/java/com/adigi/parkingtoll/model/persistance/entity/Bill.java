@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class Bill {
 
     @Id
-    @Column(name = "PARKINGSLOT_ID")
+    @Column(name = "RESERVATION_ID")
     private long id;
 
     //TODO possible to remove not null, I've added a defaut value
@@ -26,7 +26,6 @@ public class Bill {
     @ColumnDefault("0.00")
     private BigDecimal amount;
 
-    //TODO move teh relation to reservation
     @OneToOne
     @MapsId
     @JoinColumn(name = "RESERVATION_ID")

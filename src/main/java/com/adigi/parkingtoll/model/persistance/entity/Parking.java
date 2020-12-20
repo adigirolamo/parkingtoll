@@ -30,6 +30,9 @@ public class Parking {
     @Column(name = "FIXED_AMOUNT", precision = 4, scale = 2)
     private BigDecimal fixedAmount;
 
+    @Column(name = "MINUTE_PRICE", precision = 4, scale = 2)
+    private BigDecimal minutePrice;
+
     @OneToMany(mappedBy = "parking")
     private Set<ParkingSlot> parkingSlots;
 

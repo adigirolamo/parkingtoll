@@ -69,6 +69,11 @@ public class ReservationService {
         return reservation;
     }
 
+    public void setPaymentTime(Reservation reservation, LocalDateTime paymentTime) {
+        reservation.setLocalPaymentDateTime(paymentTime);
+        reservationRepository.save(reservation);
+    }
+
     private Reservation buildReservation(ParkingSlot parkingSlot) {
         Reservation reservation = new Reservation(parkingSlot, LocalDateTime.now());
 
