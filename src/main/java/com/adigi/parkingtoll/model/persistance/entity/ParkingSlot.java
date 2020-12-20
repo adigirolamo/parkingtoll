@@ -29,7 +29,6 @@ public class ParkingSlot {
     @JoinColumn(name = "PARKING_ID", nullable = false)
     private Parking parking;
 
-    //TODO position+floor verify if need to be unique
     @NotBlank(message = "Position is mandatory")
     @Column(name = "POSITION", length = 5, nullable = false, unique = false)   //TODO uso tutte e due
     private String position;

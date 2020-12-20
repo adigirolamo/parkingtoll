@@ -34,18 +34,23 @@ public class ParkingSlotController {
             @RequestParam("plate") @NotBlank @Size(max = 20) String plate,
             @RequestParam("engineType") EngineType engineType
     ) {
-        List<ParkingSlot> parkingslots = parkingSlotService.findByParkingNameUid(parkingNameUid);
+        ParkingSlot parkingSlot =
+                parkingSlotService.getFreeParkingSlotByParkingAndEngineType(parkingNameUid, plate, engineType);
 
-        //TODO
-        // Se popolata ok
-        // Se nulla invoca Service ParkingSlotDTO e gli chiede null DTO e setta status a 403
-        return new ResponseEntity<ParkingSlotDTO>(convertToDto(parkingslots.get(0)), HttpStatus.OK);
+        if (parkingSlot != null) {
+
+            return new ResponseEntity<ParkingSlotDTO>(convertToDto(parkingSlot, parkingNameUid), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<ParkingSlotDTO>(new ParkingSlotDTO(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
-
-    private ParkingSlotDTO convertToDto(ParkingSlot parkingSlot) {
+    private ParkingSlotDTO convertToDto(ParkingSlot parkingSlot, String parkingNameUid) {
 
         ParkingSlotDTO parkingSlotDTO = modelMapper.map(parkingSlot, ParkingSlotDTO.class);
+        parkingSlotDTO.setParkingNameUid(parkingNameUid);
+
         return parkingSlotDTO;
     }
 }
