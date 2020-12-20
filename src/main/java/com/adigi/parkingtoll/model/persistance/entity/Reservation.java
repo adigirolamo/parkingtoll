@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Setter
@@ -15,9 +16,9 @@ public class Reservation {
     @Column(name = "RESERVATION_ID")
     private long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CAR_ID") //, referencedColumnName = "RESERVATION_ID")
-    private Car car;
+    @NotBlank(message = "Plate is mandatory")
+    @Column(name = "PLATE", length = 20, nullable = false, unique = false)
+    private String plate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PARKINGSLOT_ID") //, referencedColumnName = "RESERVATION_ID")
