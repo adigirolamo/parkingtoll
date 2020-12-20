@@ -1,5 +1,6 @@
 package com.adigi.parkingtoll.service;
 
+import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
 import com.adigi.parkingtoll.model.persistance.repository.ReservationRepository;
@@ -29,10 +30,12 @@ public class ReservationService {
     public void updateReservationForIncomingCar(ParkingSlot parkingSlot, String plate) {
 
         Reservation reservation = getOrCreateParkingSlotReservation(parkingSlot);
+
         reservation.setPlate(plate);
         reservation.setPayed(false);
         reservation.setLocalArriveDateTime(LocalDateTime.now());
         reservation.setLocalDepartureDateTime(null);
+        reservation.setLocalPaymentDateTime(null);
 
         reservationRepository.save(reservation);
     }
@@ -42,6 +45,7 @@ public class ReservationService {
         Reservation reservation = parkingSlot.getReservation();
 
         reservation.setLocalDepartureDateTime(LocalDateTime.now());
+        reservation.setPlate(null);
 
         reservationRepository.save(reservation);
     }
@@ -58,10 +62,24 @@ public class ReservationService {
         Reservation reservation = parkingSlot.getReservation();
 
         if (reservation == null) {
-            reservation = new Reservation(parkingSlot, LocalDateTime.now());
+            reservation = buildReservation(parkingSlot);
             parkingSlot.setReservation(reservation); //TODO verify if needed, it should not be needed
         }
 
         return reservation;
+    }
+
+    private Reservation buildReservation(ParkingSlot parkingSlot) {
+        Reservation reservation = new Reservation(parkingSlot, LocalDateTime.now());
+
+        Bill bill = new Bill();
+        setEachOtherDependencies(reservation, bill);
+
+        return reservation;
+    }
+
+    private void setEachOtherDependencies(Reservation reservation, Bill bill) {
+        bill.setReservation(reservation);
+        reservation.setBill(bill);
     }
 }

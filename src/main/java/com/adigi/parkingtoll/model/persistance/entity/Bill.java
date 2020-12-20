@@ -26,19 +26,13 @@ public class Bill {
     @ColumnDefault("0.00")
     private BigDecimal amount;
 
-    //TODO remove and move it to reservation
-    @Column
-    @ColumnDefault("false")
-    private Boolean active;
-
-    //TODO remove and move it to reservation
-    @Column
-    @ColumnDefault("false")
-    private Boolean payed;
-
     //TODO move teh relation to reservation
     @OneToOne
     @MapsId
-    @JoinColumn(name = "PARKINGSLOT_ID")
-    private ParkingSlot parkingSlot;
+    @JoinColumn(name = "RESERVATION_ID")
+    private Reservation reservation;
+
+    public Bill() {
+    }
+
 }

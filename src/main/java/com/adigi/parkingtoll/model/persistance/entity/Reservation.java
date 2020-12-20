@@ -35,8 +35,15 @@ public class Reservation {
     private java.time.LocalDateTime localDepartureDateTime;
 
     @Column
+    private java.time.LocalDateTime localPaymentDateTime;
+
+    @Column
     @ColumnDefault("true")
     private Boolean payed;
+
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Bill bill;
 
     public Reservation() {
     }

@@ -43,14 +43,11 @@ public class ParkingSlot {
     @NotNull(message = "EngineType may not be null")
     private EngineType engineType;
 
-    @Column(name = "OCCUPIED")
+    @Column(name = "RESERVED")
     @ColumnDefault("false")
-    private boolean occupied;
+    private boolean reserved;
 
     @OneToOne(mappedBy = "parkingSlot")
     private Reservation reservation;
 
-    @OneToOne(mappedBy = "parkingSlot", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Bill bill;
 }

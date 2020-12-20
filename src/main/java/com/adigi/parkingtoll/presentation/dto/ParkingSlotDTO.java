@@ -20,4 +20,6 @@ public class ParkingSlotDTO {
     private EngineType engineType;
 
     private String parkingNameUid;
+
+    private boolean reserved;
 }

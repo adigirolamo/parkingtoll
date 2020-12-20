@@ -26,12 +26,15 @@ public class ParkingSlotServiceUnitTest {
     @Mock
     private ReservationService reservationService;
 
+    @Mock
+    private BillService billService;
+
     @InjectMocks
     private ParkingSlotService parkingSlotService;
 
     /**
      * Test method getFreeParkingSlotByParkingAndEngineType when the list - that is returned my ParkingSlotRepository -
-     * is populated and verify that the returned PS is updated as occupied
+     * is populated and verify that the returned PS is updated as Reserved
      */
     @Test
     public void getFreeParkingSlotByParkingAndEngineType_getUpdatedParkingSlot() {
@@ -42,7 +45,7 @@ public class ParkingSlotServiceUnitTest {
         // when
         Mockito.when(
                 parkingSlotRepository
-                        .findByParkingNameUidAndEngineTypeAndOccupiedFalse(
+                        .findByParkingNameUidAndEngineTypeAndReservedFalse(
                                 "ParkingUI", EngineType.GASOLINE)).thenReturn(parkingSlots);
 
         // method to verify
@@ -50,7 +53,7 @@ public class ParkingSlotServiceUnitTest {
                 "ParkingUI", "PLATE", EngineType.GASOLINE);
 
         // verify
-        assertTrue(retrievedParkingSlot.isOccupied());
+        assertTrue(retrievedParkingSlot.isReserved());
     }
 
     @Test
@@ -59,7 +62,7 @@ public class ParkingSlotServiceUnitTest {
         // when
         Mockito.when(
                 parkingSlotRepository
-                        .findByParkingNameUidAndEngineTypeAndOccupiedFalse(
+                        .findByParkingNameUidAndEngineTypeAndReservedFalse(
                                 "ParkingUI", EngineType.GASOLINE)).thenReturn(Collections.emptyList());
 
         // method to verify
@@ -71,35 +74,35 @@ public class ParkingSlotServiceUnitTest {
     }
 
     @Test
-    public void updateFirstParkingSlotAndReservation_onlyFirstIsOccupied() {
+    public void updateFirstParkingSlotAndReservation_onlyFirstIsReserved() {
 
         // given
-        List<ParkingSlot> slots = createNotOccupiedParkingSlots(3);
+        List<ParkingSlot> slots = createNotReservedParkingSlots(3);
 
 
         // method to verify
-        parkingSlotService.updateFirstParkingSlotAndReservation(slots, "TARGA");
+        parkingSlotService.updateFirstParkingSlotForIncomingCar(slots, "TARGA");
 
         // verify
-        assertTrue(slots.get(0).isOccupied());
-        assertFalse(slots.get(1).isOccupied());
+        assertTrue(slots.get(0).isReserved());
+        assertFalse(slots.get(1).isReserved());
     }
 
     //TODO updateParkingSlotToFree
     // if parkingSlot returned
-    // setOccupied == false
+    // setReserved == false
     // Check if update the test and control reservation too
 
     //TODO updateParkingSlotToFree
     // if not returned no error
 
-    private List<ParkingSlot> createNotOccupiedParkingSlots(int num) {
+    private List<ParkingSlot> createNotReservedParkingSlots(int num) {
 
         List<ParkingSlot> parkingSlots = new ArrayList<>(num);
 
         for (int i = 0; i < num; i++) {
             ParkingSlot ps = new ParkingSlot();
-            ps.setOccupied(false);
+            ps.setReserved(false);
             parkingSlots.add(ps);
         }
 

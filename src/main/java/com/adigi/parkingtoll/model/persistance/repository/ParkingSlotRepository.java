@@ -10,7 +10,7 @@ public interface ParkingSlotRepository extends JpaRepository<ParkingSlot, Long> 
 
     List<ParkingSlot> findByParkingNameUid(String parkingNameUid);
 
-    List<ParkingSlot> findByParkingNameUidAndEngineTypeAndOccupiedFalse(String parkingNameUid, EngineType engineType);
+    List<ParkingSlot> findByParkingNameUidAndEngineTypeAndReservedFalse(String parkingNameUid, EngineType engineType);
 
     ParkingSlot findFirstByIdAndParkingNameUid(Long id, String parkingNameUid);
 }

@@ -19,9 +19,12 @@ public class ParkingSlotService {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private BillService billService;
+
     /**
      * retrieve free Parking slot of parking toll parkingNameUid, for a specified engine type
-     * Update the parking slot (if found) setting occupied true
+     * Update the parking slot (if found) setting Reserved true
      *
      * @param parkingNameUid
      * @param plate
@@ -33,17 +36,21 @@ public class ParkingSlotService {
             String parkingNameUid, String plate, EngineType engineType) {
 
         List<ParkingSlot> freeParkingSlots =
-                parkingSlotRepository.findByParkingNameUidAndEngineTypeAndOccupiedFalse(parkingNameUid, engineType);
+                parkingSlotRepository.findByParkingNameUidAndEngineTypeAndReservedFalse(parkingNameUid, engineType);
 
         if (freeParkingSlots.isEmpty()) {
             return null;
         }
 
-        return updateFirstParkingSlotAndReservation(freeParkingSlots, plate);
+        return updateFirstParkingSlotForIncomingCar(freeParkingSlots, plate);
     }
 
     /**
-     * get the parsking slot and it updates its status to not occupied. Updates the reservatio too
+     * get the parsking slot and updates its status to not Reserved. Updates the reservation too
+     *
+     * <p>
+     * Details on reservation update:
+     * departure is set to now
      *
      * @param parkingSlotId
      * @return parsking slot or null if the parsking slot is not found
@@ -53,7 +60,7 @@ public class ParkingSlotService {
         ParkingSlot parkingSlot = parkingSlotRepository.findFirstByIdAndParkingNameUid(parkingSlotId, parkingNameUid);
 
         if (parkingSlot != null) {
-            parkingSlot.setOccupied(false);
+            parkingSlot.setReserved(false);
             reservationService.updateReservationDeparture(parkingSlot);
             parkingSlotRepository.save(parkingSlot);
         }
@@ -62,7 +69,7 @@ public class ParkingSlotService {
     }
 
     /**
-     * get the first free parking slot, set it as occupied, and after it updates the reservation.
+     * get the first free parking slot, set it as Reserved, and after it updates the reservation.
      * <p>
      * Details on reservation update:
      * plate is set to the car plate
@@ -74,17 +81,22 @@ public class ParkingSlotService {
      * @param plate
      * @return
      */
-    ParkingSlot updateFirstParkingSlotAndReservation(List<ParkingSlot> freeParkingSlots, String plate) {
+    ParkingSlot updateFirstParkingSlotForIncomingCar(List<ParkingSlot> freeParkingSlots, String plate) {
 
         ParkingSlot parkingSlot = freeParkingSlots.get(0);
 
-        parkingSlot.setOccupied(true);
+        parkingSlot.setReserved(true);
 
-        reservationService.updateReservationForIncomingCar(parkingSlot, plate);
+        updateParkingSlotDependenciesForIncomingCar(parkingSlot, plate);
 
         parkingSlotRepository.save(parkingSlot);
 
         return parkingSlot;
+    }
+
+    void updateParkingSlotDependenciesForIncomingCar(ParkingSlot parkingSlot, String plate) {
+        reservationService.updateReservationForIncomingCar(parkingSlot, plate);
+        billService.updateBillForIncomingCar(parkingSlot.getReservation());
     }
 
 }
