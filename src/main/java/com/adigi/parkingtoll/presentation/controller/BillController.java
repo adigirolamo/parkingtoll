@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,6 +29,18 @@ public class BillController {
             @PathVariable Long parkingSlotId
     ) {
         Bill bill = billService.calculateBillForLeavingCar(parkingNameUid, parkingSlotId);
+
+        ResponseEntity<BillDTO> response = createResponse(bill);
+        return response;
+    }
+
+    @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill/{billId}")
+    public ResponseEntity<BillDTO> payedBill(
+            @PathVariable String parkingNameUid,
+            @PathVariable Long parkingSlotId,
+            @PathVariable Long billId
+    ) {
+        Bill bill = billService.updateBillPayed(parkingNameUid, parkingSlotId, billId);
 
         ResponseEntity<BillDTO> response = createResponse(bill);
         return response;

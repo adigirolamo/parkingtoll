@@ -5,6 +5,8 @@ import java.math.RoundingMode;
 
 public interface PricingAlgorithm {
 
+    //TODO search for java functional interface
+    //TODO create a java object that contains the values
     BigDecimal calculateAmount(BigDecimal fixedAmount, BigDecimal pricePerMinute, Long minutesDifference);
 
     static PricingAlgorithm onlyHoursPricing() {

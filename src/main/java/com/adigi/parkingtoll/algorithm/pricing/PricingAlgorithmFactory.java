@@ -9,6 +9,7 @@ public class PricingAlgorithmFactory {
 
         PricingAlgorithm pricingAlgorithm;
 
+        ////TODO Change to map e farlo bean e farlo postconstruct
         switch (pricingPolicy) {
             case ONLY_HOURS:
                 pricingAlgorithm = PricingAlgorithm.onlyHoursPricing();

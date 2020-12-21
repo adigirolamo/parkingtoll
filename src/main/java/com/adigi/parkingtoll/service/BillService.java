@@ -1,9 +1,9 @@
 package com.adigi.parkingtoll.service;
 
-import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.Parking;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.model.persistance.entity.builder.BillBuilder;
 import com.adigi.parkingtoll.model.persistance.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,9 @@ public class BillService {
     private BillRepository billRepository;
 
     @Autowired
+    private BillBuilder billBuilder;
+
+    @Autowired
     private ReservationService reservationService;
 
     @Autowired
@@ -32,6 +35,27 @@ public class BillService {
 
         billRepository.save(bill);
     }
+
+    public Bill updateBillPayed(String parkingNameUid, Long parkingSlotId, Long billId) {
+
+        Bill bill = billRepository.retrieveByParkingNameParkingSlotIdBillId(parkingNameUid, parkingSlotId, billId);
+
+        if (bill != null) {
+
+            resetBill(bill);
+
+            reservationService.updateReservationPayed(bill.getReservation());
+
+            return bill;
+        }
+        return null;
+    }
+
+    private void resetBill(Bill bill) {
+
+        resetBillAmount(bill);
+    }
+
 
     /**
      * Calculate Bill amount and return bill
@@ -58,6 +82,7 @@ public class BillService {
         return bill;
     }
 
+
     private Bill retrieveBill(String parkingNameUid, Long parkingSlotId) {
         return billRepository.findFirstByReservationParkingSlotIdAndReservationParkingSlotParkingNameUid(
                 parkingSlotId,
@@ -69,18 +94,14 @@ public class BillService {
         return bill.getReservation().getParkingSlot().getParking();
     }
 
-    //TODO vedere se eliminarla
-    private PricingPolicy retrievePricingPolicy(Bill bill) {
-        return bill.getReservation().getParkingSlot().getParking().getPricingPolicy();
-    }
-
     private Bill getOrCreateReservationBill(Reservation reservation) {
 
         Bill bill = reservation.getBill();
 
         if (bill == null) {
-            bill = new Bill();
-            reservation.setBill(bill); //TODO verify if needed, it should not be needed
+            //TODO change to bibuilder
+            bill = billBuilder.get();
+            reservation.setBill(bill);
         }
 
         return bill;

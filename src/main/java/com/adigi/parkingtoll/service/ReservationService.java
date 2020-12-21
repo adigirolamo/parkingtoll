@@ -3,6 +3,7 @@ package com.adigi.parkingtoll.service;
 import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.model.persistance.entity.builder.BillBuilder;
 import com.adigi.parkingtoll.model.persistance.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ public class ReservationService {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    //TODO remove and use BiBuider
+    @Autowired
+    private BillBuilder billBuilder;
 
     /**
      * Update Reservation for and incoming car:
@@ -50,6 +55,14 @@ public class ReservationService {
         reservationRepository.save(reservation);
     }
 
+    public void updateReservationPayed(Reservation reservation) {
+
+        reservation.setLocalPaymentDateTime(LocalDateTime.now());
+        reservation.setPayed(true);
+
+        reservationRepository.save(reservation);
+    }
+
     /**
      * return Reservation associated to a ParkingSlot.
      * If ParkingSlot has not a reservation associated yet, the reservation will be created and after returned
@@ -77,12 +90,12 @@ public class ReservationService {
     private Reservation buildReservation(ParkingSlot parkingSlot) {
         Reservation reservation = new Reservation(parkingSlot, LocalDateTime.now());
 
-        Bill bill = new Bill();
-        setEachOtherDependencies(reservation, bill);
+        setEachOtherDependencies(reservation, billBuilder.get());
 
         return reservation;
     }
 
+    //TODO Move to BiBuilder
     private void setEachOtherDependencies(Reservation reservation, Bill bill) {
         bill.setReservation(reservation);
         reservation.setBill(bill);

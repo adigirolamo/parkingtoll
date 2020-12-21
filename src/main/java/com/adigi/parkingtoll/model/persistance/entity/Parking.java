@@ -38,4 +38,11 @@ public class Parking {
 
     @NotNull(message = "PricingPolicy may not be null")
     private PricingPolicy pricingPolicy;
+
+    public Parking() {
+    }
+
+    public Parking(@NotBlank(message = "Name is mandatory") String nameUid) {
+        this.nameUid = nameUid;
+    }
 }
