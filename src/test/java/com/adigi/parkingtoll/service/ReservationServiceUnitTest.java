@@ -2,14 +2,12 @@ package com.adigi.parkingtoll.service;
 
 import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
-import com.adigi.parkingtoll.model.persistance.entity.builder.BillBuilder;
 import com.adigi.parkingtoll.model.persistance.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
@@ -21,9 +19,6 @@ public class ReservationServiceUnitTest {
 
     @Mock
     private ReservationRepository reservationRepository;
-
-    @Spy
-    private BillBuilder billBuilder;
 
     @InjectMocks
     private ReservationService reservationService;

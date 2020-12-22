@@ -1,13 +1,15 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class Reservation {
@@ -41,11 +43,19 @@ public class Reservation {
     @PrimaryKeyJoinColumn
     private Bill bill;
 
-    public Reservation() {
-    }
+    public static class ReservationBuilder {
 
-    public Reservation(ParkingSlot parkingSlot, LocalDateTime localArriveDateTime) {
-        this.parkingSlot = parkingSlot;
-        this.localArriveDateTime = localArriveDateTime;
+        /**
+         * Create and return default Reservation set for incoming car event
+         * The Reservation field that are set are :
+         * parking slot
+         * localArriveDateTime : its value is set to now
+         *
+         * @return
+         */
+        public Reservation.ReservationBuilder prepareForIncomingCarEvent(ParkingSlot slot) {
+            this.parkingSlot(slot).localArriveDateTime(LocalDateTime.now());
+            return this;
+        }
     }
 }

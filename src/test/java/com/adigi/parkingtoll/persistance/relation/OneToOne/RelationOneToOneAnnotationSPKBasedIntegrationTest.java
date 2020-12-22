@@ -23,7 +23,7 @@ public class RelationOneToOneAnnotationSPKBasedIntegrationTest {
     public void givenData_whenInsert_thenCreates1to1relationship() {
         // given
         Reservation reservation = new Reservation();
-        Bill bill = new Bill();
+        Bill bill = Bill.builder().build();
 
         // when
         update(reservation, bill);

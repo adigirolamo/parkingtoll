@@ -1,8 +1,7 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
 import com.adigi.parkingtoll.model.enums.Currency;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -10,6 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class Bill {
@@ -18,7 +20,6 @@ public class Bill {
     @Column(name = "RESERVATION_ID")
     private long id;
 
-    //TODO possible to remove not null, I've added a defaut value
     @NotNull(message = "Currency may not be null")
     private Currency currency;
 
@@ -31,7 +32,17 @@ public class Bill {
     @JoinColumn(name = "RESERVATION_ID")
     private Reservation reservation;
 
-    public Bill() {
-    }
+    public static class BillBuilder {
 
+        /**
+         * Create and return default bill instance
+         * Default bill has currency set has Currency.EURO
+         *
+         * @return
+         */
+        public BillBuilder prepareDefault() {
+            this.currency(Currency.EURO);
+            return this;
+        }
+    }
 }

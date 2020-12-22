@@ -2,8 +2,7 @@ package com.adigi.parkingtoll.model.persistance.entity;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.enums.VehicleType;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -11,12 +10,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Setter
-@Getter
 @Table(
         uniqueConstraints =
         @UniqueConstraint(columnNames = {"PARKING_ID", "position"})
 )
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class ParkingSlot {
 
     @Id

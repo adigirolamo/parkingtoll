@@ -15,7 +15,7 @@ public class BillTest {
 
     @Test
     void saveBill_shouldSaveWithDefaultSqlValues() {
-        Bill bill = new Bill();
+        Bill bill = Bill.builder().build();
         //TODO
 //        bill = userRepository.save(bill);
 //

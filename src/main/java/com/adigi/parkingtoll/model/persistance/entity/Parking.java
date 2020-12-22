@@ -1,8 +1,7 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +10,9 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 public class Parking {
@@ -39,10 +41,4 @@ public class Parking {
     @NotNull(message = "PricingPolicy may not be null")
     private PricingPolicy pricingPolicy;
 
-    public Parking() {
-    }
-
-    public Parking(@NotBlank(message = "Name is mandatory") String nameUid) {
-        this.nameUid = nameUid;
-    }
 }

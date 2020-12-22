@@ -8,7 +8,6 @@ import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.Parking;
 import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
-import com.adigi.parkingtoll.model.persistance.entity.builder.BillBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -27,8 +26,6 @@ public class BillRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
-
-    private BillBuilder billBuilder = new BillBuilder();
 
     private final String PARKING_NAME = "test";
 
@@ -72,7 +69,7 @@ public class BillRepositoryTest {
     private Bill configureBill(ParkingSlot ps) {
         // given
         //TODO refactor using bi builder
-        Parking p = new Parking(PARKING_NAME);
+        Parking p = Parking.builder().nameUid(PARKING_NAME).build();
         p.setPricingPolicy(PricingPolicy.ONLY_HOURS);
         //TODO user default Ps builder
         ps.setPosition("P");
@@ -80,7 +77,7 @@ public class BillRepositoryTest {
         ps.setEngineType(EngineType.ELECTRIC_50KW);
         ps.setFloor(2);
         Reservation r = new Reservation();
-        Bill bill = billBuilder.get();
+        Bill bill = Bill.builder().prepareDefault().build();
 
         setEachOther(p, ps,
                 (a, b) -> a.setParkingSlots(Set.of(b)),

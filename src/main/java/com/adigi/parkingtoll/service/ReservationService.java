@@ -3,7 +3,6 @@ package com.adigi.parkingtoll.service;
 import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
-import com.adigi.parkingtoll.model.persistance.entity.builder.BillBuilder;
 import com.adigi.parkingtoll.model.persistance.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,6 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
 
     //TODO remove and use BiBuider
-    @Autowired
-    private BillBuilder billBuilder;
 
     /**
      * Update Reservation for and incoming car:
@@ -34,6 +31,7 @@ public class ReservationService {
      */
     public void updateReservationForIncomingCar(ParkingSlot parkingSlot, String plate) {
 
+        //TODO if update di reservation it has to be created bill too
         Reservation reservation = getOrCreateParkingSlotReservation(parkingSlot);
 
         reservation.setPlate(plate);
@@ -87,10 +85,11 @@ public class ReservationService {
         reservationRepository.save(reservation);
     }
 
+    //TODO it is not service ownership to build reservation/build
     private Reservation buildReservation(ParkingSlot parkingSlot) {
-        Reservation reservation = new Reservation(parkingSlot, LocalDateTime.now());
+        Reservation reservation = Reservation.builder().prepareForIncomingCarEvent(parkingSlot).build();
 
-        setEachOtherDependencies(reservation, billBuilder.get());
+        setEachOtherDependencies(reservation, Bill.builder().prepareDefault().build());
 
         return reservation;
     }

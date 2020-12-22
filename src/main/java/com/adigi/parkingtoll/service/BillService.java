@@ -3,7 +3,6 @@ package com.adigi.parkingtoll.service;
 import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.Parking;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
-import com.adigi.parkingtoll.model.persistance.entity.builder.BillBuilder;
 import com.adigi.parkingtoll.model.persistance.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,6 @@ public class BillService {
 
     @Autowired
     private BillRepository billRepository;
-
-    @Autowired
-    private BillBuilder billBuilder;
 
     @Autowired
     private ReservationService reservationService;
@@ -100,7 +96,7 @@ public class BillService {
 
         if (bill == null) {
             //TODO change to bibuilder
-            bill = billBuilder.get();
+            bill = Bill.builder().prepareDefault().build();
             reservation.setBill(bill);
         }
 
