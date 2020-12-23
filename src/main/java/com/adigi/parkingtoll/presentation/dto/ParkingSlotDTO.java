@@ -21,5 +21,5 @@ public class ParkingSlotDTO {
 
     private String parkingNameUid;
 
-    private boolean reserved;
+    private Boolean reserved;
 }

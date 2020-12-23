@@ -48,6 +48,7 @@ public class ParkingSlotController {
         return createResponse(parkingSlot, parkingNameUid);
     }
 
+    //TODO it is possible to refactor it, with a general method that accepts a convertToDto and a map ? or String ...
     private ResponseEntity<ParkingSlotDTO> createResponse(ParkingSlot parkingSlot, String parkingNameUid) {
         if (parkingSlot != null) {
 

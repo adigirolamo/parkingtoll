@@ -41,7 +41,7 @@ public class PricingAlgorithmServiceUnitTest {
         Mockito.when(
                 localDateTimeService
                         .getMinutesDifference(
-                                any(), any())).thenReturn(minutesDifference);//.thenReturn(Collections.emptyList());
+                                any(), any())).thenReturn(minutesDifference);
 
         // when
         BigDecimal amount = pricingAlgorithmService.calculateAmount(parking, reservation, null);
@@ -66,7 +66,7 @@ public class PricingAlgorithmServiceUnitTest {
         Mockito.when(
                 localDateTimeService
                         .getMinutesDifference(
-                                any(), any())).thenReturn(minutesDifference);//.thenReturn(Collections.emptyList());
+                                any(), any())).thenReturn(minutesDifference);
 
         // when
         BigDecimal amount = pricingAlgorithmService.calculateAmount(parking, reservation, null);

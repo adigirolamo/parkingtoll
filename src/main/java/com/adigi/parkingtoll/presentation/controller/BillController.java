@@ -35,12 +35,12 @@ public class BillController {
     }
 
     @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill/{billId}")
-    public ResponseEntity<BillDTO> payedBill(
+    public ResponseEntity<BillDTO> payBill(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId,
             @PathVariable Long billId
     ) {
-        Bill bill = billService.updateBillPayed(parkingNameUid, parkingSlotId, billId);
+        Bill bill = billService.payBill(parkingNameUid, parkingSlotId, billId);
 
         ResponseEntity<BillDTO> response = createResponse(bill);
         return response;

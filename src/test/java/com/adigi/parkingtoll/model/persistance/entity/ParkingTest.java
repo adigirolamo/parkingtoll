@@ -1,6 +1,6 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
-import com.adigi.parkingtoll.annotation.DataJpaTestJunit;
+import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -24,6 +24,9 @@ public class BillService {
     @Autowired
     private PricingAlgorithmService pricingAlgorithmService;
 
+    @Autowired
+    private LocalDateTimeService timeService;
+
     public void updateBillForIncomingCar(Reservation reservation) {
 
         Bill bill = getOrCreateReservationBill(reservation);
@@ -32,7 +35,7 @@ public class BillService {
         billRepository.save(bill);
     }
 
-    public Bill updateBillPayed(String parkingNameUid, Long parkingSlotId, Long billId) {
+    public Bill payBill(String parkingNameUid, Long parkingSlotId, Long billId) {
 
         Bill bill = billRepository.retrieveByParkingNameParkingSlotIdBillId(parkingNameUid, parkingSlotId, billId);
 
@@ -47,6 +50,11 @@ public class BillService {
         return null;
     }
 
+    /**
+     * reset bill amount
+     *
+     * @param bill
+     */
     private void resetBill(Bill bill) {
 
         resetBillAmount(bill);
@@ -66,7 +74,8 @@ public class BillService {
         //retrieve bill
         Bill bill = retrieveBill(parkingNameUid, parkingSlotId);
 
-        LocalDateTime paymentTime = LocalDateTime.now();
+        //TODO remove direct localDateTime.now()
+        LocalDateTime paymentTime = timeService.getNow();
 
         Reservation reservation = bill.getReservation();
         BigDecimal amount = pricingAlgorithmService.calculateAmount(retrieveParking(bill), reservation, paymentTime);

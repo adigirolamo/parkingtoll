@@ -1,6 +1,6 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
-import com.adigi.parkingtoll.annotation.DataJpaTestJunit;
+import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;

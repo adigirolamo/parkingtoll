@@ -12,4 +12,8 @@ public class LocalDateTimeService {
         Duration duration = Duration.between(arrivalTime, paymentTime);
         return duration.toMinutes();
     }
+
+    public LocalDateTime getNow() {
+        return LocalDateTime.now();
+    }
 }

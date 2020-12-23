@@ -1,4 +1,4 @@
-package com.adigi.parkingtoll.annotation;
+package com.adigi.parkingtoll.test.annotation;
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

@@ -1,6 +1,6 @@
 package com.adigi.parkingtoll.model.persistance.repository;
 
-import com.adigi.parkingtoll.annotation.DataJpaTestJunit;
+import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import com.adigi.parkingtoll.model.enums.VehicleType;
@@ -66,6 +66,7 @@ public class BillRepositoryTest {
         assertNull(billDb);
     }
 
+    //TODO refactor
     private Bill configureBill(ParkingSlot ps) {
         // given
         //TODO refactor using bi builder

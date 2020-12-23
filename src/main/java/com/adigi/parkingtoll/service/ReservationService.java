@@ -53,9 +53,10 @@ public class ReservationService {
         reservationRepository.save(reservation);
     }
 
+    //TODO do JUnit test that only reservation is udpated (and not payed time)
     public void updateReservationPayed(Reservation reservation) {
 
-        reservation.setLocalPaymentDateTime(LocalDateTime.now());
+        // TODO it could be done an additional check that throws an exception if reservation.payedTime minus time.now() is a huge difference
         reservation.setPayed(true);
 
         reservationRepository.save(reservation);

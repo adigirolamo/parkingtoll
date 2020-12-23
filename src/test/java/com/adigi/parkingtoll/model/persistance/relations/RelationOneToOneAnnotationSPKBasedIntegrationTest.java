@@ -1,6 +1,6 @@
-package com.adigi.parkingtoll.persistance.relation.OneToOne;
+package com.adigi.parkingtoll.model.persistance.relations;
 
-import com.adigi.parkingtoll.annotation.DataJpaTestJunit;
+import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import com.adigi.parkingtoll.model.enums.Currency;
 import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
