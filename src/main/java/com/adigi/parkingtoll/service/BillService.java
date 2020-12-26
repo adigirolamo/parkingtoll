@@ -22,7 +22,7 @@ public class BillService {
     private ReservationService reservationService;
 
     @Autowired
-    private PricingAlgorithmService pricingAlgorithmService;
+    private PricingStrategyService pricingStrategyService;
 
     @Autowired
     private LocalDateTimeService timeService;
@@ -78,7 +78,7 @@ public class BillService {
         LocalDateTime paymentTime = timeService.getNow();
 
         Reservation reservation = bill.getReservation();
-        BigDecimal amount = pricingAlgorithmService.calculateAmount(retrieveParking(bill), reservation, paymentTime);
+        BigDecimal amount = pricingStrategyService.calculateAmount(retrieveParking(bill), reservation, paymentTime);
 
         reservationService.setPaymentTime(reservation, paymentTime);
 

@@ -51,7 +51,7 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
     public String PLATE = "PLATE";
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         helper.clearParams();
     }

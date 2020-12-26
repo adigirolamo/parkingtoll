@@ -53,7 +53,7 @@ public class BillControllerIntegrationTest extends ReqPerformer {
     private String parking;
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 
         helper.clearParams();
