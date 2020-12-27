@@ -22,6 +22,9 @@ public class ParkingSlotService {
     @Autowired
     private BillService billService;
 
+    @Autowired
+    private ExceptionService exceptionService;
+
     /**
      * retrieve free Parking slot of parking toll parkingNameUid, for a specified engine type
      * Update the parking slot (if found) setting Reserved true
@@ -38,9 +41,8 @@ public class ParkingSlotService {
         List<ParkingSlot> freeParkingSlots =
                 parkingSlotRepository.findByParkingNameUidAndEngineTypeAndReservedFalse(parkingNameUid, engineType);
 
-        if (freeParkingSlots.isEmpty()) {
-            return null;
-        }
+        exceptionService.checkNotNull(freeParkingSlots,
+                String.format("ParkingSlot of type [%s] and parking [%s]", engineType.toString(), parkingNameUid));
 
         return updateFirstParkingSlotForIncomingCar(freeParkingSlots, plate);
     }
@@ -59,11 +61,12 @@ public class ParkingSlotService {
 
         ParkingSlot parkingSlot = parkingSlotRepository.findFirstByIdAndParkingNameUid(parkingSlotId, parkingNameUid);
 
-        if (parkingSlot != null) {
-            parkingSlot.setReserved(false);
-            reservationService.updateReservationDeparture(parkingSlot);
-            parkingSlotRepository.save(parkingSlot);
-        }
+        exceptionService.checkNotNull(parkingSlot,
+                String.format("ParkingSlot id[%d] parking [%s]", parkingSlotId, parkingNameUid));
+
+        parkingSlot.setReserved(false);
+        reservationService.updateReservationDeparture(parkingSlot);
+        parkingSlotRepository.save(parkingSlot);
 
         return parkingSlot;
     }

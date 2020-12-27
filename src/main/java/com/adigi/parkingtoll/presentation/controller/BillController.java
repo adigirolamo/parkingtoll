@@ -6,6 +6,7 @@ import com.adigi.parkingtoll.service.BillService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,10 @@ public class BillController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill")
+//    @Autowired
+//    private ExceptionService exceptionService;
+
+    @GetMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> calculateBillForLeavingCar(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId
@@ -34,7 +38,7 @@ public class BillController {
         return response;
     }
 
-    @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill/{billId}")
+    @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill/{billId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> payBill(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId,
@@ -47,12 +51,10 @@ public class BillController {
     }
 
     private ResponseEntity<BillDTO> createResponse(Bill bill) {
-        if (bill != null) {
 
-            return new ResponseEntity<BillDTO>(convertToDto(bill), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<BillDTO>(new BillDTO(), HttpStatus.NOT_FOUND);
-        }
+//        exceptionService.checkNotNull(bill, "Bill");
+
+        return new ResponseEntity<BillDTO>(convertToDto(bill), HttpStatus.OK);
     }
 
     private BillDTO convertToDto(Bill bill) {

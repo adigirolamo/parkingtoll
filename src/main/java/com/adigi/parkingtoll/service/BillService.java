@@ -27,6 +27,9 @@ public class BillService {
     @Autowired
     private LocalDateTimeService timeService;
 
+    @Autowired
+    private ExceptionService exceptionService;
+
     public void updateBillForIncomingCar(Reservation reservation) {
 
         Bill bill = getOrCreateReservationBill(reservation);
@@ -39,15 +42,15 @@ public class BillService {
 
         Bill bill = billRepository.retrieveByParkingNameParkingSlotIdBillId(parkingNameUid, parkingSlotId, billId);
 
-        if (bill != null) {
+        exceptionService.checkNotNull(bill,
+                String.format("Bill id[%d] for slot [%d] and parking [%s]",
+                        billId, parkingSlotId, parkingNameUid));
 
-            resetBill(bill);
+        resetBill(bill);
 
-            reservationService.updateReservationPayed(bill.getReservation());
+        reservationService.updateReservationPayed(bill.getReservation());
 
-            return bill;
-        }
-        return null;
+        return bill;
     }
 
     /**
@@ -73,6 +76,11 @@ public class BillService {
 
         //retrieve bill
         Bill bill = retrieveBill(parkingNameUid, parkingSlotId);
+
+        //TODO test error
+        exceptionService.checkNotNull(bill,
+                String.format("Bill for slot [%d] and parking [%s]",
+                        parkingSlotId, parkingNameUid));
 
         //TODO remove direct localDateTime.now()
         LocalDateTime paymentTime = timeService.getNow();

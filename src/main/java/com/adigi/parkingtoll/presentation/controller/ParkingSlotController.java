@@ -7,13 +7,13 @@ import com.adigi.parkingtoll.service.ParkingSlotService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @RestController
 @Validated
@@ -26,7 +26,7 @@ public class ParkingSlotController {
     private ModelMapper modelMapper;
 
     //TODO add swagger description
-    @GetMapping(value = "/parking/{parkingNameUid}/parkingslot")
+    @GetMapping(value = "/parking/{parkingNameUid}/parkingslot", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ParkingSlotDTO> getParkingSlot(
             @PathVariable String parkingNameUid,
             @RequestParam("plate") @NotBlank @Size(max = 20) String plate,
@@ -38,7 +38,7 @@ public class ParkingSlotController {
         return createResponse(parkingSlot, parkingNameUid);
     }
 
-    @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}")
+    @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ParkingSlotDTO> updateParkingSlotToFree(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId
@@ -50,12 +50,8 @@ public class ParkingSlotController {
 
     //TODO it is possible to refactor it, with a general method that accepts a convertToDto and a map ? or String ...
     private ResponseEntity<ParkingSlotDTO> createResponse(ParkingSlot parkingSlot, String parkingNameUid) {
-        if (parkingSlot != null) {
 
-            return new ResponseEntity<ParkingSlotDTO>(convertToDto(parkingSlot, parkingNameUid), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<ParkingSlotDTO>(new ParkingSlotDTO(), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<ParkingSlotDTO>(convertToDto(parkingSlot, parkingNameUid), HttpStatus.OK);
     }
 
     private ParkingSlotDTO convertToDto(ParkingSlot parkingSlot, String parkingNameUid) {

@@ -1,8 +1,9 @@
 package com.adigi.parkingtoll.test.helper;
 
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.util.MultiValueMap;
 
 import java.util.function.BiFunction;
@@ -28,7 +29,7 @@ public abstract class ReqPerformer {
      * @throws Exception
      */
     protected ResultActions performReq(
-            BiFunction<String, Object[], RequestBuilder> operation,
+            BiFunction<String, Object[], MockHttpServletRequestBuilder> operation,
             String urlTemplate,
             Object... uriVars) throws Exception {
 
@@ -46,13 +47,13 @@ public abstract class ReqPerformer {
      * @throws Exception
      */
     protected ResultActions performReq(
-            BiFunction<String, Object[], RequestBuilder> operation,
+            BiFunction<String, Object[], MockHttpServletRequestBuilder> operation,
             String urlTemplate,
             MultiValueMap<String, String> requestParams,
             Object... uriVars) throws Exception {
 
         return mvc
-                .perform(operation.apply(urlTemplate, uriVars))
+                .perform(operation.apply(urlTemplate, uriVars).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print());
     }
 

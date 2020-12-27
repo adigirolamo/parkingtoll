@@ -8,8 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,6 +27,9 @@ public class ParkingSlotServiceUnitTest {
 
     @Mock
     private ReservationService reservationService;
+
+    @Spy
+    private ExceptionService ExceptionService;
 
     @Mock
     private BillService billService;
@@ -43,10 +48,9 @@ public class ParkingSlotServiceUnitTest {
         List<ParkingSlot> parkingSlots = new ArrayList<>(Arrays.asList(new ParkingSlot()));
 
         // when
-        Mockito.when(
-                parkingSlotRepository
-                        .findByParkingNameUidAndEngineTypeAndReservedFalse(
-                                "ParkingUI", EngineType.GASOLINE)).thenReturn(parkingSlots);
+        Mockito.when(parkingSlotRepository
+                .findByParkingNameUidAndEngineTypeAndReservedFalse("ParkingUI", EngineType.GASOLINE))
+                .thenReturn(parkingSlots);
 
         // method to verify
         ParkingSlot retrievedParkingSlot = parkingSlotService.getFreeParkingSlotByParkingAndEngineType(
@@ -57,20 +61,21 @@ public class ParkingSlotServiceUnitTest {
     }
 
     @Test
-    public void getFreeParkingSlotByParkingAndEngineType_whenEmptyList_getNull() {
+    public void givenEmptyList_whenGetFreeParkingSlotByParkingAndEngineType_throwEntityNotFoundException() {
+
+        // given
+        Mockito.when(parkingSlotRepository.
+                findByParkingNameUidAndEngineTypeAndReservedFalse("ParkingUI", EngineType.GASOLINE))
+                .thenReturn(Collections.emptyList());
 
         // when
-        Mockito.when(
-                parkingSlotRepository
-                        .findByParkingNameUidAndEngineTypeAndReservedFalse(
-                                "ParkingUI", EngineType.GASOLINE)).thenReturn(Collections.emptyList());
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            parkingSlotService.getFreeParkingSlotByParkingAndEngineType(
+                    "ParkingUI", "PLATE", EngineType.GASOLINE);
+        });
 
-        // method to verify
-        ParkingSlot retrievedParkingSlot = parkingSlotService.getFreeParkingSlotByParkingAndEngineType(
-                "ParkingUI", "PLATE", EngineType.GASOLINE);
+        assertTrue(exception.getMessage().contains("Not found ParkingSlot"));
 
-        // verify
-        assertNull(retrievedParkingSlot);
     }
 
     @Test
