@@ -1,4 +1,4 @@
-package com.adigi.parkingtoll.algorithm.pricing.strategy;
+package com.adigi.parkingtoll.service.pricing.strategy;
 
 
 import com.adigi.parkingtoll.model.enums.PricingPolicy;

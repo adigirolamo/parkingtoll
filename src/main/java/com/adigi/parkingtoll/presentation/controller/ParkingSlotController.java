@@ -51,7 +51,7 @@ public class ParkingSlotController {
     //TODO it is possible to refactor it, with a general method that accepts a convertToDto and a map ? or String ...
     private ResponseEntity<ParkingSlotDTO> createResponse(ParkingSlot parkingSlot, String parkingNameUid) {
 
-        return new ResponseEntity<ParkingSlotDTO>(convertToDto(parkingSlot, parkingNameUid), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDto(parkingSlot, parkingNameUid), HttpStatus.OK);
     }
 
     private ParkingSlotDTO convertToDto(ParkingSlot parkingSlot, String parkingNameUid) {

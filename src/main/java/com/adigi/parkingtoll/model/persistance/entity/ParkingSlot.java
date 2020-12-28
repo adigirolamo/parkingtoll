@@ -1,6 +1,7 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
+import com.adigi.parkingtoll.model.enums.ParkingSlotState;
 import com.adigi.parkingtoll.model.enums.VehicleType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -32,7 +33,7 @@ public class ParkingSlot {
     private Parking parking;
 
     @NotBlank(message = "Position is mandatory")
-    @Column(name = "POSITION", length = 5, nullable = false, unique = false)   //TODO uso tutte e due
+    @Column(name = "POSITION", length = 5, nullable = false)   //TODO uso tutte e due
     private String position;
 
     @NotNull(message = "Floor is mandatory")
@@ -49,7 +50,11 @@ public class ParkingSlot {
     @ColumnDefault("false")
     private boolean reserved;
 
-    @OneToOne(mappedBy = "parkingSlot")
+    @OneToOne(mappedBy = "parkingSlot",cascade = {CascadeType.ALL})
     private Reservation reservation;
+
+    @Column(name = "PARKINGSLOT_STATE")
+    @NotNull(message = "ParkingSlotState may not be null")
+    private ParkingSlotState parkingSlotState;
 
 }

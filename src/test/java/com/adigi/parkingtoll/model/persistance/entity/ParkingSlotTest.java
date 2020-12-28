@@ -1,9 +1,8 @@
 package com.adigi.parkingtoll.model.persistance.entity;
 
-import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
-import com.adigi.parkingtoll.model.enums.VehicleType;
+import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +11,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
-
 import java.util.List;
 
+import static com.adigi.parkingtoll.model.enums.ParkingSlotState.FREE;
+import static com.adigi.parkingtoll.model.enums.VehicleType.CAR;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTestJunit
 public class ParkingSlotTest {
@@ -129,10 +128,11 @@ public class ParkingSlotTest {
         ParkingSlot parkingSlot = new ParkingSlot();
 
         parkingSlot.setParking(parking);
-        parkingSlot.setVehicleType(VehicleType.CAR);
+        parkingSlot.setVehicleType(CAR);
         parkingSlot.setPosition(position);
         parkingSlot.setFloor(floor);
         parkingSlot.setEngineType(engineType);
+        parkingSlot.setParkingSlotState(FREE);
 
         return parkingSlot;
     }

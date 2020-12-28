@@ -195,6 +195,8 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
         // when
         MvcResult mvcResult = performGetParkingSlot(helper.getRequestParams(), NAME_PARKING2).andReturn();
         long id = mapper.getResponseObject(mvcResult, ParkingSlot.class).getId();
+        BillDTO calculatedBillDto = mapper.getBillDTO(performGetCalculateBill(NAME_PARKING2, id));
+        performPayBill(NAME_PARKING2, id, calculatedBillDto.getId());
         ResultActions updatedParkingSlot = performUpdateParkingSlotToFree(NAME_PARKING2, id);
 
         // then verify
@@ -213,6 +215,8 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
         // when
         MvcResult mvcResult = performGetParkingSlot(helper.getRequestParams(), NAME_PARKING2).andReturn();
         long id = mapper.getResponseObject(mvcResult, ParkingSlot.class).getId();
+        BillDTO calculatedBillDto = mapper.getBillDTO(performGetCalculateBill(NAME_PARKING2, id));
+        performPayBill(NAME_PARKING2, id, calculatedBillDto.getId());
         performUpdateParkingSlotToFree(NAME_PARKING2, id);
 
         // then

@@ -27,7 +27,7 @@ public class Bill {
     @ColumnDefault("0.00")
     private BigDecimal amount;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @MapsId
     @JoinColumn(name = "RESERVATION_ID")
     private Reservation reservation;

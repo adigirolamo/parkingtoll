@@ -1,7 +1,9 @@
 package com.adigi.parkingtoll.presentation.errorhandling;
 
+import com.adigi.parkingtoll.exception.WrongStateException;
 import com.adigi.parkingtoll.presentation.errorhandling.dto.ApiError;
 import com.adigi.parkingtoll.presentation.errorhandling.dto.ApiSubErrorMapper;
+import com.adigi.parkingtoll.service.state.ParkingSlotStateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
@@ -36,6 +38,25 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     private ApiSubErrorMapper mapper;
 
     // 400
+
+    /**
+     * Handles Wrong State Exception.
+     * Triggered when the client request to pass from one state to another and the second state could not be reached
+     * from the first state.
+     *
+     * @param ex
+     * @param request
+     * @return
+     * @see ParkingSlotStateService#init() , it shows the allowed state changes
+     */
+    @ExceptionHandler({WrongStateException.class})
+    public ResponseEntity<Object> handleWrongStateException(WrongStateException ex, WebRequest request) {
+        log.info(ex.getClass().getName());
+        //
+
+        final ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getHttpStatus());
+    }
 
     /**
      * Handle MissingServletRequestParameterException.

@@ -1,8 +1,8 @@
 package com.adigi.parkingtoll.service;
 
-import com.adigi.parkingtoll.algorithm.pricing.PricingStrategyFactory;
-import com.adigi.parkingtoll.algorithm.pricing.strategy.FeeAndHoursPricingStrategy;
-import com.adigi.parkingtoll.algorithm.pricing.strategy.OnlyHoursPricingStrategy;
+import com.adigi.parkingtoll.service.pricing.PricingStrategyFactory;
+import com.adigi.parkingtoll.service.pricing.strategy.FeeAndHoursPricingStrategy;
+import com.adigi.parkingtoll.service.pricing.strategy.OnlyHoursPricingStrategy;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import com.adigi.parkingtoll.model.persistance.entity.Parking;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;

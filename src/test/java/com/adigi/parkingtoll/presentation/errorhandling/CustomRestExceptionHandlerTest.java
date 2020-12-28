@@ -1,6 +1,7 @@
 package com.adigi.parkingtoll.presentation.errorhandling;
 
 import com.adigi.parkingtoll.ParkingtollApplication;
+import com.adigi.parkingtoll.presentation.dto.ParkingSlotDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
-import static com.adigi.parkingtoll.test.constant.PresentationConstant.REQGET_GET_PARKING_SLOT_REQ_PARAM;
+import static com.adigi.parkingtoll.test.constant.PresentationConstant.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -94,6 +95,25 @@ class CustomRestExceptionHandlerTest {
         verifyStatusMessage(response, BAD_REQUEST, "parameter is missing");
     }
 
+    @Test
+    public void givenWrongStateException_whenRequest_getBAD_REQUEST() {
+
+        // when
+        ResponseEntity<ParkingSlotDTO> parkingDto = testRestTemplate.exchange(
+                REQGET_GET_PARKING_SLOT_REQ_PARAM, HttpMethod.GET, request,
+                ParkingSlotDTO.class, "PARKING1", "aa", "GASOLINE");
+
+        ResponseEntity<Object> response = testRestTemplate.exchange(
+                REQPUT_UPDATE_PARKINGSLOT_TO_FREE,
+                HttpMethod.PUT,
+                request,
+                Object.class,
+                "PARKING1", parkingDto.getBody().getId()
+        );
+
+        // then
+        verifyStatusMessage(response, BAD_REQUEST, "Change state from");
+    }
 
     @Test
     public void givenMethodArgumentTypeMismatchException_whenRequest_getBAD_REQUEST() {

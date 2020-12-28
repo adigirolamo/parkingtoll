@@ -3,11 +3,16 @@ package com.adigi.parkingtoll.service;
 import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistance.repository.ParkingSlotRepository;
+import com.adigi.parkingtoll.service.state.ParkingSlotStateService;
+import com.adigi.parkingtoll.service.state.StateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.adigi.parkingtoll.model.enums.ParkingSlotState.FREE;
+import static com.adigi.parkingtoll.model.enums.ParkingSlotState.RESERVED;
 
 @Service
 @Transactional
@@ -17,13 +22,10 @@ public class ParkingSlotService {
     private ParkingSlotRepository parkingSlotRepository;
 
     @Autowired
-    private ReservationService reservationService;
-
-    @Autowired
-    private BillService billService;
-
-    @Autowired
     private ExceptionService exceptionService;
+
+    @Autowired
+    private ParkingSlotStateService parkingSlotStateService;
 
     /**
      * retrieve free Parking slot of parking toll parkingNameUid, for a specified engine type
@@ -48,14 +50,14 @@ public class ParkingSlotService {
     }
 
     /**
-     * get the parsking slot and updates its status to not Reserved. Updates the reservation too
+     * get the parking slot and updates its status to not Reserved. Updates the reservation too
      *
      * <p>
      * Details on reservation update:
      * departure is set to now
      *
      * @param parkingSlotId
-     * @return parsking slot or null if the parsking slot is not found
+     * @return parking slot or null if the parking slot is not found
      */
     public ParkingSlot updateParkingSlotToFree(Long parkingSlotId, String parkingNameUid) {
 
@@ -64,9 +66,7 @@ public class ParkingSlotService {
         exceptionService.checkNotNull(parkingSlot,
                 String.format("ParkingSlot id[%d] parking [%s]", parkingSlotId, parkingNameUid));
 
-        parkingSlot.setReserved(false);
-        reservationService.updateReservationDeparture(parkingSlot);
-        parkingSlotRepository.save(parkingSlot);
+        parkingSlotStateService.changeState(parkingSlot, FREE, StateData.builder().build());
 
         return parkingSlot;
     }
@@ -88,18 +88,9 @@ public class ParkingSlotService {
 
         ParkingSlot parkingSlot = freeParkingSlots.get(0);
 
-        parkingSlot.setReserved(true);
-
-        updateParkingSlotDependenciesForIncomingCar(parkingSlot, plate);
-
-        parkingSlotRepository.save(parkingSlot);
+        parkingSlotStateService.changeState(parkingSlot, RESERVED, StateData.builder().plate(plate).build());
 
         return parkingSlot;
-    }
-
-    void updateParkingSlotDependenciesForIncomingCar(ParkingSlot parkingSlot, String plate) {
-        reservationService.updateReservationForIncomingCar(parkingSlot, plate);
-        billService.updateBillForIncomingCar(parkingSlot.getReservation());
     }
 
 }
