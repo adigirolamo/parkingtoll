@@ -1,6 +1,6 @@
 package com.adigi.parkingtoll.service;
 
-import com.adigi.parkingtoll.model.persistance.repository.BillRepository;
+import com.adigi.parkingtoll.model.persistence.repository.BillRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

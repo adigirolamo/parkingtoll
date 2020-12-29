@@ -1,6 +1,6 @@
 package com.adigi.parkingtoll.presentation.controller;
 
-import com.adigi.parkingtoll.model.persistance.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.entity.Bill;
 import com.adigi.parkingtoll.presentation.dto.BillDTO;
 import com.adigi.parkingtoll.service.BillService;
 import org.modelmapper.ModelMapper;
@@ -24,7 +24,10 @@ public class BillController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    //TODO this is case car is going to leave, parking appliance (client) recognize plate
+    // and asks BE to get the bill with calculate amount (PAYING state)
+    //TODO change to plate from PSID . Client show amount
+    @GetMapping(value = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> calculateBillForLeavingCar(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId
@@ -34,7 +37,11 @@ public class BillController {
         return createResponse(bill);
     }
 
-    @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill/{billId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    //TODO this is the case after person has payed the amount. Appliance (client) send BE PUT bill payed for plate
+    // BE answers with bill status and at this point the client get Parking Slot ID and asks BE to free that PS
+    //with call updateParkingSlotToFree of PSC
+    //TODO change to plate
+    @PutMapping(value = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}/reservation/bill/{billId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> payBill(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId,

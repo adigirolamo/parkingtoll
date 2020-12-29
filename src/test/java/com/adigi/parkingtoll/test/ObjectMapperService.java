@@ -1,6 +1,6 @@
 package com.adigi.parkingtoll.test;
 
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.presentation.dto.BillDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

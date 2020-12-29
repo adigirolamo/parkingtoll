@@ -2,8 +2,8 @@ package com.adigi.parkingtoll.service;
 
 import com.adigi.parkingtoll.service.pricing.PricingStrategyFactory;
 import com.adigi.parkingtoll.service.pricing.strategy.PricingStrategy;
-import com.adigi.parkingtoll.model.persistance.entity.Parking;
-import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.model.persistence.entity.Parking;
+import com.adigi.parkingtoll.model.persistence.entity.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

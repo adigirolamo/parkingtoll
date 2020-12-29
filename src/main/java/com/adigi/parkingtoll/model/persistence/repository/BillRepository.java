@@ -1,6 +1,6 @@
-package com.adigi.parkingtoll.model.persistance.repository;
+package com.adigi.parkingtoll.model.persistence.repository;
 
-import com.adigi.parkingtoll.model.persistance.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.entity.Bill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

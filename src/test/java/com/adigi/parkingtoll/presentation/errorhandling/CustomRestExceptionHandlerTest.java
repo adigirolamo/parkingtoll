@@ -80,7 +80,7 @@ class CustomRestExceptionHandlerTest {
     public void givenMissingServletRequestParameterException_whenRequest_getBAD_REQUEST() {
 
         // given
-        String missingPlate = "/parking/{parkingNameUid}/parkingslot?&engineType={enginetype}";
+        String missingPlate = "/parkings/{parkingNameUid}/parkingslots?&engineType={enginetype}";
 
         // when
         ResponseEntity<Object> response = testRestTemplate.exchange(

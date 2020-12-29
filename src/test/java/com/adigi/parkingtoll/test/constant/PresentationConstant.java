@@ -5,9 +5,9 @@ public interface PresentationConstant {
 
     // Request URI
     public String BASE_URL = "http://localhost:8080";
-    public String REQGET_GET_PARKING_SLOT = "/parking/{parkingNameUid}/parkingslot";
-    public String REQGET_GET_PARKING_SLOT_REQ_PARAM = "/parking/{parkingNameUid}/parkingslot?plate={idplate}&engineType={enginetype}";
-    public String REQPUT_UPDATE_PARKINGSLOT_TO_FREE = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}";
+    public String REQGET_GET_PARKING_SLOT = "/parkings/{parkingNameUid}/parkingslots";
+    public String REQGET_GET_PARKING_SLOT_REQ_PARAM = "/parkings/{parkingNameUid}/parkingslots?plate={idplate}&engineType={enginetype}";
+    public String REQPUT_UPDATE_PARKINGSLOT_TO_FREE = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}";
     public String REQGET_CALCULATE_BILL = REQPUT_UPDATE_PARKINGSLOT_TO_FREE + "/reservation/bill";
     public String REQPUT_PAY_BILL = REQGET_CALCULATE_BILL + "/{billId}";
 

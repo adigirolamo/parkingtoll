@@ -14,7 +14,7 @@ public class StateMessageService {
 
     @PostConstruct
     void init() {
-        defaultMessage = "%s's state is %s and it can't go to %s. Allowed state%s from %s: %s";
+        defaultMessage = "%s's state is %s and it can't change to %s. Allowed state%s from %s: %s";
     }
 
     public String exceptionMessage(ParkingSlotState from, ParkingSlotState to,

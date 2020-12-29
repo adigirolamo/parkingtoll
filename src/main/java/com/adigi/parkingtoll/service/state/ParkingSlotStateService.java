@@ -2,8 +2,8 @@ package com.adigi.parkingtoll.service.state;
 
 import com.adigi.parkingtoll.exception.WrongStateException;
 import com.adigi.parkingtoll.model.enums.ParkingSlotState;
-import com.adigi.parkingtoll.model.persistance.entity.Bill;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.service.state.strategy.BillChangeState;
 import com.adigi.parkingtoll.service.state.strategy.ParkingSlotChangeState;
 import com.adigi.parkingtoll.service.state.strategy.ReservationChangeState;

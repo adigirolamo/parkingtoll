@@ -1,7 +1,7 @@
 package com.adigi.parkingtoll.service.state.strategy;
 
 import com.adigi.parkingtoll.model.enums.ParkingSlotState;
-import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.model.persistence.entity.Reservation;
 import com.adigi.parkingtoll.service.LocalDateTimeService;
 import com.adigi.parkingtoll.service.state.StateData;
 import org.springframework.beans.factory.annotation.Autowired;

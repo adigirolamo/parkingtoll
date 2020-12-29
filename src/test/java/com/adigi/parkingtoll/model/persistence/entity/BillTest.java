@@ -1,4 +1,4 @@
-package com.adigi.parkingtoll.model.persistance.entity;
+package com.adigi.parkingtoll.model.persistence.entity;
 
 import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import org.junit.jupiter.api.Test;

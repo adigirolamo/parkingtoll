@@ -1,7 +1,7 @@
 package com.adigi.parkingtoll.presentation.controller;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.presentation.dto.ParkingSlotDTO;
 import com.adigi.parkingtoll.service.ParkingSlotService;
 import org.modelmapper.ModelMapper;
@@ -26,7 +26,8 @@ public class ParkingSlotController {
     private ModelMapper modelMapper;
 
     //TODO add swagger description
-    @GetMapping(value = "/parking/{parkingNameUid}/parkingslot", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    //TODO this is case when parking appliance (client) recognize car's plate, check the type and ask BackEnd for free slot
+    @GetMapping(value = "/parkings/{parkingNameUid}/parkingslots", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ParkingSlotDTO> getParkingSlot(
             @PathVariable String parkingNameUid,
             @RequestParam("plate") @NotBlank @Size(max = 20) String plate,
@@ -38,7 +39,7 @@ public class ParkingSlotController {
         return createResponse(parkingSlot, parkingNameUid);
     }
 
-    @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ParkingSlotDTO> updateParkingSlotToFree(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId

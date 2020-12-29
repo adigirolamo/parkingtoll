@@ -1,7 +1,7 @@
 package com.adigi.parkingtoll.service.state.strategy;
 
 import com.adigi.parkingtoll.model.enums.ParkingSlotState;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.service.state.StateData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

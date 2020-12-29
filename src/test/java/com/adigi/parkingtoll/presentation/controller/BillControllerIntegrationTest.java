@@ -2,9 +2,9 @@ package com.adigi.parkingtoll.presentation.controller;
 
 import com.adigi.parkingtoll.ParkingtollApplication;
 import com.adigi.parkingtoll.model.enums.EngineType;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
-import com.adigi.parkingtoll.model.persistance.entity.Reservation;
-import com.adigi.parkingtoll.model.persistance.repository.BillRepository;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.Reservation;
+import com.adigi.parkingtoll.model.persistence.repository.BillRepository;
 import com.adigi.parkingtoll.presentation.dto.BillDTO;
 import com.adigi.parkingtoll.service.LocalDateTimeService;
 import com.adigi.parkingtoll.test.ObjectMapperService;

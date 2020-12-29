@@ -1,8 +1,8 @@
 package com.adigi.parkingtoll.service;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
-import com.adigi.parkingtoll.model.persistance.repository.ParkingSlotRepository;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.repository.ParkingSlotRepository;
 import com.adigi.parkingtoll.service.state.ParkingSlotStateService;
 import com.adigi.parkingtoll.service.state.StateData;
 import org.springframework.beans.factory.annotation.Autowired;

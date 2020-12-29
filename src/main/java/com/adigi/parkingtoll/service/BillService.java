@@ -1,7 +1,7 @@
 package com.adigi.parkingtoll.service;
 
-import com.adigi.parkingtoll.model.persistance.entity.Bill;
-import com.adigi.parkingtoll.model.persistance.repository.BillRepository;
+import com.adigi.parkingtoll.model.persistence.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.repository.BillRepository;
 import com.adigi.parkingtoll.service.state.ParkingSlotStateService;
 import com.adigi.parkingtoll.service.state.StateData;
 import org.springframework.beans.factory.annotation.Autowired;

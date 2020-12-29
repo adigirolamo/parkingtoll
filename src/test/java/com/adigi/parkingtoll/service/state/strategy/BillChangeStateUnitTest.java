@@ -1,9 +1,9 @@
 package com.adigi.parkingtoll.service.state.strategy;
 
 import com.adigi.parkingtoll.model.enums.ParkingSlotState;
-import com.adigi.parkingtoll.model.persistance.entity.Bill;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
-import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.model.persistence.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.Reservation;
 import com.adigi.parkingtoll.service.PricingStrategyService;
 import com.adigi.parkingtoll.service.state.StateData;
 import org.junit.jupiter.api.Test;

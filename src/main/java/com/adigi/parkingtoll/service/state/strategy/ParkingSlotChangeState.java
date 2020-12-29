@@ -1,7 +1,7 @@
 package com.adigi.parkingtoll.service.state.strategy;
 
 import com.adigi.parkingtoll.model.enums.ParkingSlotState;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

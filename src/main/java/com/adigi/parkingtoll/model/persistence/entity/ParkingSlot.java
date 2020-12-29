@@ -1,4 +1,4 @@
-package com.adigi.parkingtoll.model.persistance.entity;
+package com.adigi.parkingtoll.model.persistence.entity;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.enums.ParkingSlotState;

@@ -1,7 +1,7 @@
-package com.adigi.parkingtoll.model.persistance.repository;
+package com.adigi.parkingtoll.model.persistence.repository;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

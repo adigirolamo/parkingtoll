@@ -1,9 +1,9 @@
-package com.adigi.parkingtoll.model.persistance.relations;
+package com.adigi.parkingtoll.model.persistence.relations;
 
 import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import com.adigi.parkingtoll.model.enums.Currency;
-import com.adigi.parkingtoll.model.persistance.entity.Bill;
-import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.model.persistence.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.entity.Reservation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;

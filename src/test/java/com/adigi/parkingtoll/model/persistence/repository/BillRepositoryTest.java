@@ -1,9 +1,9 @@
-package com.adigi.parkingtoll.model.persistance.repository;
+package com.adigi.parkingtoll.model.persistence.repository;
 
-import com.adigi.parkingtoll.model.persistance.entity.Bill;
-import com.adigi.parkingtoll.model.persistance.entity.Parking;
-import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
-import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.model.persistence.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.entity.Parking;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
+import com.adigi.parkingtoll.model.persistence.entity.Reservation;
 import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
