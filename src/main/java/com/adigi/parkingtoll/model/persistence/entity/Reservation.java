@@ -24,6 +24,10 @@ public class Reservation {
     @Column(name = "RESERVATION_ID")
     private long id;
 
+    /**
+     * It is the plate of the vehicle that is using the parking slot related to this reservation.
+     * It can be null if there is not any vehicle using the parking slot related to this reservation.
+     */
     @Column(name = "PLATE", length = 20)
     private String plate;
 

@@ -29,7 +29,7 @@ public class ParkingSlot {
 
     @NotNull(message = "Parking is mandatory")
     @ManyToOne
-    @JoinColumn(name = "PARKING_ID", nullable = false)
+    @JoinColumn(name = "PARKING_ID")
     private Parking parking;
 
     @NotBlank(message = "Position is mandatory")
@@ -40,9 +40,20 @@ public class ParkingSlot {
     @Column(name = "FLOOR")
     private Integer floor;
 
+    /**
+     * Vehicle type that the parking slot is designed for.
+     *
+     * @see VehicleType
+     */
     @NotNull(message = "VehicleType may not be null")
     private VehicleType vehicleType;
 
+    /**
+     * Engine type that the parking slot is designed for.
+     * Ex. if a parking slot has engine type ELECTRIC_20KW, it could be reserved only for electric 20KW cars
+     *
+     * @see EngineType
+     */
     @NotNull(message = "EngineType may not be null")
     private EngineType engineType;
 
@@ -53,6 +64,11 @@ public class ParkingSlot {
     @OneToOne(mappedBy = "parkingSlot", cascade = {CascadeType.ALL})
     private Reservation reservation;
 
+    /**
+     * It indicates the current state of the parking slot
+     *
+     * @see ParkingSlotState
+     */
     @Column(name = "PARKINGSLOT_STATE")
     @NotNull(message = "ParkingSlotState may not be null")
     private ParkingSlotState parkingSlotState;

@@ -1,39 +1,39 @@
 package com.adigi.parkingtoll.model.persistence.relations;
 
-import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import com.adigi.parkingtoll.model.enums.Currency;
+import com.adigi.parkingtoll.model.enums.EngineType;
+import com.adigi.parkingtoll.model.persistence.entity.BaseEntityTest;
 import com.adigi.parkingtoll.model.persistence.entity.Bill;
 import com.adigi.parkingtoll.model.persistence.entity.Reservation;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DataJpaTestJunit
-public class RelationOneToOneAnnotationSPKBasedIntegrationTest {
+public class RelationOneToOneAnnotationSPKBasedIntegrationTest extends BaseEntityTest {
 
-    @Autowired
-    private TestEntityManager entityManager;
+    @BeforeEach
+    public void setUp() {
+        init();
+    }
 
     @Test
     public void givenData_whenInsert_thenCreates1to1relationship() {
-        // given
-        Reservation reservation = new Reservation();
-        Bill bill = Bill.builder().build();
 
         // when
-        update(reservation, bill);
+        Reservation r = buildParkingSlotReservationBill(parking, "abc", 1, EngineType.ELECTRIC_50KW).getReservation();
+        Bill b = r.getBill();
+        update(r, b);
 
-        entityManager.persistAndFlush(reservation);
+        entityManager.persistAndFlush(r);
 
-        Reservation reservationDb = entityManager.find(Reservation.class, reservation.getId());
+        Reservation reservationDb = entityManager.find(Reservation.class, r.getId());
 
         // then
-        assert1to1InsertedData(reservation, bill, reservationDb);
+        assert1to1InsertedData(r, b, reservationDb);
     }
 
     private void assert1to1InsertedData(Reservation reservation, Bill bill, Reservation reservationDb) {
@@ -64,19 +64,11 @@ public class RelationOneToOneAnnotationSPKBasedIntegrationTest {
         update(reservation);
         update(bill);
 
-        reservation.setBill(bill);
-
-        bill.setReservation(reservation);
     }
 
     private void update(Reservation reservation) {
         reservation.setPlate("AAA");
         reservation.setPayed(true);
-//        reservation.setParking(createParking());
-//        reservation.setPosition("AAA");
-//        reservation.setFloor(1);
-//        reservation.setVehicleType(VehicleType.CAR);
-//        reservation.setEngineType(EngineType.GASOLINE);
 
     }
 
@@ -86,13 +78,4 @@ public class RelationOneToOneAnnotationSPKBasedIntegrationTest {
         bill.setAmount(new BigDecimal(10.0));
     }
 
-//    private Parking createParking() {
-//        Parking parking = new Parking();
-//        parking.setNameUid("A");
-//        parking.setPricingPolicy(PricingPolicy.ONLY_HOURS);
-//
-//        entityManager.persistAndFlush(parking);
-//
-//        return parking;
-//    }
 }

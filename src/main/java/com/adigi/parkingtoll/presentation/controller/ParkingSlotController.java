@@ -6,7 +6,6 @@ import com.adigi.parkingtoll.presentation.dto.ParkingSlotDTO;
 import com.adigi.parkingtoll.service.ParkingSlotService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,13 +16,15 @@ import javax.validation.constraints.Size;
 
 @RestController
 @Validated
-public class ParkingSlotController {
+public class ParkingSlotController extends BaseRestController<ParkingSlot, ParkingSlotDTO> {
 
-    @Autowired
     private ParkingSlotService parkingSlotService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public ParkingSlotController(ParkingSlotService parkingSlotService, ModelMapper modelMapper) {
+        this.parkingSlotService = parkingSlotService;
+        this.modelMapper = modelMapper;
+    }
 
     //TODO add swagger description
     //TODO this is case when parking appliance (client) recognize car's plate, check the type and ask BackEnd for free slot
@@ -49,16 +50,10 @@ public class ParkingSlotController {
         return createResponse(parkingSlot, parkingNameUid);
     }
 
-    //TODO it is possible to refactor it, with a general method that accepts a convertToDto and a map ? or String ...
-    private ResponseEntity<ParkingSlotDTO> createResponse(ParkingSlot parkingSlot, String parkingNameUid) {
-
-        return new ResponseEntity<>(convertToDto(parkingSlot, parkingNameUid), HttpStatus.OK);
-    }
-
-    private ParkingSlotDTO convertToDto(ParkingSlot parkingSlot, String parkingNameUid) {
-
+    @Override
+    protected ParkingSlotDTO convertToDto(ParkingSlot parkingSlot, String... args) {
         ParkingSlotDTO parkingSlotDTO = modelMapper.map(parkingSlot, ParkingSlotDTO.class);
-        parkingSlotDTO.setParkingNameUid(parkingNameUid);
+        parkingSlotDTO.setParkingNameUid(args[0]);
 
         return parkingSlotDTO;
     }

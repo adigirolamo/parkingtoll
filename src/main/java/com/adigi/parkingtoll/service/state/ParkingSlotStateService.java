@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import static com.adigi.parkingtoll.model.enums.ParkingSlotState.*;
 
@@ -24,27 +23,23 @@ public class ParkingSlotStateService {
     private ParkingSlotChangeState parkingSlotChangeState;
     private ReservationChangeState reservationChangeState;
 
-    @Autowired
     private StateMessageService stateMessageService;
 
     private Map<ParkingSlotState, Set<ParkingSlotState>> allowedChanges;
 
     @Autowired
-    public ParkingSlotStateService(BillChangeState billChangeState,
-                                   ParkingSlotChangeState parkingSlotChangeState,
-                                   ReservationChangeState reservationChangeState) {
+    public ParkingSlotStateService(BillChangeState billChangeState, ParkingSlotChangeState parkingSlotChangeState, ReservationChangeState reservationChangeState, StateMessageService stateMessageService, Map<ParkingSlotState, Set<ParkingSlotState>> allowedChanges) {
         this.billChangeState = billChangeState;
         this.parkingSlotChangeState = parkingSlotChangeState;
         this.reservationChangeState = reservationChangeState;
-        this.allowedChanges = new TreeMap<>();
+        this.stateMessageService = stateMessageService;
+        this.allowedChanges = allowedChanges;
     }
 
     /**
      * Define all the allowed changes
      * key is the actual status
      * value is a list of accepted next state by the key state
-     * <p>
-     * Define default message
      */
     @PostConstruct
     public void init() {
@@ -55,6 +50,15 @@ public class ParkingSlotStateService {
 
     }
 
+    /**
+     * Execute all the changes needed on ParkingSlot, Reservation and Bill, to go from the actual Parking slot's state
+     * to next state.
+     * It verifies that the state change is allowed, otherwise WrongStateException will be thrown
+     *
+     * @param parkingSlot Parking slot
+     * @param nextState   next state
+     * @param data        additional external data needed to perform the state change
+     */
     public void changeState(ParkingSlot parkingSlot, ParkingSlotState nextState, StateData data) {
         ParkingSlotState actualState = parkingSlotChangeState.getActualState(parkingSlot);
 
@@ -65,12 +69,27 @@ public class ParkingSlotStateService {
         billChangeState.change(parkingSlot.getReservation().getBill(), nextState, data);
     }
 
+    /**
+     * Execute all the changes needed on ParkingSlot, Reservation and Bill, to go from the actual Parking slot's state
+     * to next state.
+     * It verifies that the state change is allowed, otherwise WrongStateException will be thrown
+     *
+     * @param bill      Bill
+     * @param nextState next state
+     * @param data      additional external data needed to perform the state change
+     */
     public void changeState(Bill bill, ParkingSlotState nextState, StateData data) {
         changeState(bill.getReservation().getParkingSlot(), nextState, data);
     }
 
     //
 
+    /**
+     * Verify that the state change is allowed, otherwise it throws WrongStateException
+     *
+     * @param from actual state
+     * @param to   next state
+     */
     void checkChange(ParkingSlotState from, ParkingSlotState to) {
         if (!isAllowed(from, to)) {
             throw new WrongStateException(

@@ -35,8 +35,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @Autowired
     private ApiSubErrorMapper mapper;
+
+    @Autowired
+    public CustomRestExceptionHandler(ApiSubErrorMapper mapper) {
+        this.mapper = mapper;
+    }
 
     // 400
 

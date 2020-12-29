@@ -17,6 +17,14 @@ public class StateMessageService {
         defaultMessage = "%s's state is %s and it can't change to %s. Allowed state%s from %s: %s";
     }
 
+    /**
+     * Generate exception message
+     *
+     * @param from          actual state
+     * @param to            next state
+     * @param allowedStates allowed states for actual state
+     * @return message
+     */
     public String exceptionMessage(ParkingSlotState from, ParkingSlotState to,
                                    Set<ParkingSlotState> allowedStates) {
 

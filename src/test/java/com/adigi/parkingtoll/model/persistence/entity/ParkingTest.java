@@ -1,31 +1,19 @@
 package com.adigi.parkingtoll.model.persistence.entity;
 
-import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DataJpaTestJunit
-public class ParkingTest {
-
-    private static final String NAME_UID = "NAME_UID";
-
-    @Autowired
-    private TestEntityManager entityManager;
-
-    private Parking parking;
+public class ParkingTest extends BaseEntityTest {
 
     @BeforeEach
     public void setUp() {
-        parking = new Parking();
+        init();
         parking.setNameUid(NAME_UID);
     }
 
@@ -90,24 +78,4 @@ public class ParkingTest {
 
     }
 
-    private List<Parking> retrieveParkingByPricingPolicyParameter(PricingPolicy pricingPolicy) {
-
-        String jpql = "select c from Parking c where c.pricingPolicy = :pricingPolicy";
-
-        TypedQuery<Parking> query = entityManager.getEntityManager().createQuery(jpql, Parking.class);
-        query.setParameter("pricingPolicy", pricingPolicy);
-
-        return query.getResultList();
-    }
-
-    private void updateParking(Parking parking, PricingPolicy pricingPolicy, String nameUid) {
-
-        if (pricingPolicy != null) {
-            parking.setPricingPolicy(pricingPolicy);
-        }
-
-        if (nameUid != null) {
-            parking.setNameUid(nameUid);
-        }
-    }
 }

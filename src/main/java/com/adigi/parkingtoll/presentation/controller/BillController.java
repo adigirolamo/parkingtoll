@@ -6,7 +6,6 @@ import com.adigi.parkingtoll.presentation.dto.BillDTO;
 import com.adigi.parkingtoll.service.BillService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,13 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
-public class BillController {
+public class BillController extends BaseRestController<Bill,BillDTO>{
 
-    @Autowired
     private BillService billService;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public BillController(BillService billService, ModelMapper modelMapper) {
+        this.billService = billService;
+        this.modelMapper = modelMapper;
+    }
 
     //TODO this is case car is going to leave, parking appliance (client) recognize plate
     // and asks BE to get the bill with calculate amount (PAYING state)
@@ -41,7 +42,6 @@ public class BillController {
     //TODO this is the case after person has payed the amount. Appliance (client) send BE PUT bill payed for plate
     // BE answers with bill status and at this point the client get Parking Slot ID and asks BE to free that PS
     // with call updateParkingSlotToFree of PSC
-    //TODO change to plate
     @PutMapping(value = "/parkings/{parkingNameUid}/parkingslots/{plate}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> payBill(
             @PathVariable String parkingNameUid,
@@ -52,13 +52,8 @@ public class BillController {
         return createResponse(bill);
     }
 
-    private ResponseEntity<BillDTO> createResponse(Bill bill) {
-
-        return new ResponseEntity<>(convertToDto(bill), HttpStatus.OK);
-    }
-
-    private BillDTO convertToDto(Bill bill) {
-
+    @Override
+    protected BillDTO convertToDto(Bill bill, String... args) {
         ParkingSlot parkingSlot = bill.getReservation().getParkingSlot();
 
         BillDTO billDTO = modelMapper.map(bill, BillDTO.class);

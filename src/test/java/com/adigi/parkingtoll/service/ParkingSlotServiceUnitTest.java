@@ -1,7 +1,6 @@
 package com.adigi.parkingtoll.service;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
-import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistence.repository.ParkingSlotRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +11,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,25 +46,4 @@ public class ParkingSlotServiceUnitTest {
 
     }
 
-
-    //TODO updateParkingSlotToFree
-    // if parkingSlot returned
-    // setReserved == false
-    // Check if update the test and control reservation too
-
-    //TODO updateParkingSlotToFree
-    // if not returned no error
-
-    private List<ParkingSlot> createNotReservedParkingSlots(int num) {
-
-        List<ParkingSlot> parkingSlots = new ArrayList<>(num);
-
-        for (int i = 0; i < num; i++) {
-            ParkingSlot ps = new ParkingSlot();
-            ps.setReserved(false);
-            parkingSlots.add(ps);
-        }
-
-        return parkingSlots;
-    }
 }

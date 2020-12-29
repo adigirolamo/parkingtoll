@@ -7,6 +7,7 @@ import com.adigi.parkingtoll.service.state.ParkingSlotStateService;
 import com.adigi.parkingtoll.service.state.StateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,27 +17,30 @@ import static com.adigi.parkingtoll.model.enums.ParkingSlotState.RESERVED;
 
 @Service
 @Transactional
-public class ParkingSlotService {
+public class ParkingSlotService extends BaseControllerService {
 
-    @Autowired
     private ParkingSlotRepository parkingSlotRepository;
 
-    @Autowired
-    private ExceptionService exceptionService;
 
     @Autowired
-    private ParkingSlotStateService parkingSlotStateService;
+    public ParkingSlotService(ParkingSlotRepository parkingSlotRepository, ExceptionService exceptionService, ParkingSlotStateService parkingSlotStateService) {
+        this.parkingSlotRepository = parkingSlotRepository;
+        this.exceptionService = exceptionService;
+        this.parkingSlotStateService = parkingSlotStateService;
+    }
 
     /**
-     * retrieve free Parking slot of parking toll parkingNameUid, for a specified engine type
-     * Update the parking slot (if found) setting Reserved true
+     * retrieve the first free Parking slot of the parking toll parkingNameUid.
+     * The parking slot that is returned is for a specified engine type
+     * It also updates the parking slot state to RESERVED
      *
      * @param parkingNameUid
      * @param plate
-     * @param engineType
-     * @return free parking slot or null if there isn't any free parking slot for that engine type in parking toll
+     * @param engineType     vehicle's engine type.
+     * @return first free parking slot in the parking toll, for that vehicle's engine type
+     * @see ParkingSlotStateService check status changes Business Logic
      */
-    //TODO check if make it transactional avoiding ghost read
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ParkingSlot getFreeParkingSlotByParkingAndEngineType(
             String parkingNameUid, String plate, EngineType engineType) {
 
@@ -50,14 +54,11 @@ public class ParkingSlotService {
     }
 
     /**
-     * get the parking slot and updates its status to not Reserved. Updates the reservation too
+     * Get the parking slot by its ID and updates its status to FREE.
      *
-     * <p>
-     * Details on reservation update:
-     * departure is set to now
-     *
-     * @param parkingSlotId
-     * @return parking slot or null if the parking slot is not found
+     * @param parkingSlotId parking slot id
+     * @return parking slot after its update
+     * @see ParkingSlotStateService check status changes Business Logic
      */
     public ParkingSlot updateParkingSlotToFree(Long parkingSlotId, String parkingNameUid) {
 
@@ -72,17 +73,12 @@ public class ParkingSlotService {
     }
 
     /**
-     * get the first free parking slot, set it as Reserved, and after it updates the reservation.
-     * <p>
-     * Details on reservation update:
-     * plate is set to the car plate
-     * payed is set to false
-     * arrival is set to now
-     * departure is set to null
+     * Get the first parking slot in the list and changes its status to RESERVED
      *
      * @param freeParkingSlots
      * @param plate
      * @return
+     * @see ParkingSlotStateService check status changes Business Logic
      */
     ParkingSlot updateFirstParkingSlotForIncomingCar(List<ParkingSlot> freeParkingSlots, String plate) {
 
