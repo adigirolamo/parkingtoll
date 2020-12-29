@@ -35,7 +35,7 @@ public class Parking {
     @Column(name = "MINUTE_PRICE", precision = 4, scale = 2)
     private BigDecimal minutePrice;
 
-    @OneToMany(mappedBy = "parking")
+    @OneToMany(mappedBy = "parking",cascade = {CascadeType.ALL})
     private Set<ParkingSlot> parkingSlots;
 
     @NotNull(message = "PricingPolicy may not be null")

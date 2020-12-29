@@ -24,9 +24,6 @@ public class BillController {
     @Autowired
     private ModelMapper modelMapper;
 
-//    @Autowired
-//    private ExceptionService exceptionService;
-
     @GetMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> calculateBillForLeavingCar(
             @PathVariable String parkingNameUid,
@@ -34,8 +31,7 @@ public class BillController {
     ) {
         Bill bill = billService.calculateBillForLeavingCar(parkingNameUid, parkingSlotId);
 
-        ResponseEntity<BillDTO> response = createResponse(bill);
-        return response;
+        return createResponse(bill);
     }
 
     @PutMapping(value = "/parking/{parkingNameUid}/parkingslot/{parkingSlotId}/reservation/bill/{billId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,21 +42,19 @@ public class BillController {
     ) {
         Bill bill = billService.payBill(parkingNameUid, parkingSlotId, billId);
 
-        ResponseEntity<BillDTO> response = createResponse(bill);
-        return response;
+        return createResponse(bill);
     }
 
     private ResponseEntity<BillDTO> createResponse(Bill bill) {
 
-//        exceptionService.checkNotNull(bill, "Bill");
-
-        return new ResponseEntity<BillDTO>(convertToDto(bill), HttpStatus.OK);
+        return new ResponseEntity<>(convertToDto(bill), HttpStatus.OK);
     }
 
     private BillDTO convertToDto(Bill bill) {
 
         BillDTO billDTO = modelMapper.map(bill, BillDTO.class);
         billDTO.setPlate(bill.getReservation().getPlate());
+        billDTO.setParkingSlotState(bill.getReservation().getParkingSlot().getParkingSlotState());
 
         return billDTO;
     }

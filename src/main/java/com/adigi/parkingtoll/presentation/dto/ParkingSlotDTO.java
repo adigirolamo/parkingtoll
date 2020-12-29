@@ -1,6 +1,7 @@
 package com.adigi.parkingtoll.presentation.dto;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
+import com.adigi.parkingtoll.model.enums.ParkingSlotState;
 import com.adigi.parkingtoll.model.enums.VehicleType;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +23,6 @@ public class ParkingSlotDTO {
     private String parkingNameUid;
 
     private Boolean reserved;
+
+    private ParkingSlotState parkingSlotState;
 }

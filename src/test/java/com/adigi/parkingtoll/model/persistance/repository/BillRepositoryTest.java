@@ -1,13 +1,10 @@
 package com.adigi.parkingtoll.model.persistance.repository;
 
-import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
-import com.adigi.parkingtoll.model.enums.EngineType;
-import com.adigi.parkingtoll.model.enums.PricingPolicy;
-import com.adigi.parkingtoll.model.enums.VehicleType;
 import com.adigi.parkingtoll.model.persistance.entity.Bill;
 import com.adigi.parkingtoll.model.persistance.entity.Parking;
 import com.adigi.parkingtoll.model.persistance.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistance.entity.Reservation;
+import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -15,6 +12,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import static com.adigi.parkingtoll.model.enums.EngineType.ELECTRIC_50KW;
+import static com.adigi.parkingtoll.model.enums.ParkingSlotState.FREE;
+import static com.adigi.parkingtoll.model.enums.PricingPolicy.ONLY_HOURS;
+import static com.adigi.parkingtoll.model.enums.VehicleType.CAR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -71,12 +72,13 @@ public class BillRepositoryTest {
         // given
         //TODO refactor using bi builder
         Parking p = Parking.builder().nameUid(PARKING_NAME).build();
-        p.setPricingPolicy(PricingPolicy.ONLY_HOURS);
+        p.setPricingPolicy(ONLY_HOURS);
         //TODO user default Ps builder
         ps.setPosition("P");
-        ps.setVehicleType(VehicleType.CAR);
-        ps.setEngineType(EngineType.ELECTRIC_50KW);
+        ps.setVehicleType(CAR);
+        ps.setEngineType(ELECTRIC_50KW);
         ps.setFloor(2);
+        ps.setParkingSlotState(FREE);
         Reservation r = new Reservation();
         Bill bill = Bill.builder().prepareDefault().build();
 

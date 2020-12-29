@@ -1,6 +1,7 @@
 package com.adigi.parkingtoll.presentation.dto;
 
 import com.adigi.parkingtoll.model.enums.Currency;
+import com.adigi.parkingtoll.model.enums.ParkingSlotState;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +18,7 @@ public class BillDTO {
     private BigDecimal amount;
 
     private String plate;
+
+    private ParkingSlotState parkingSlotState;
 
 }

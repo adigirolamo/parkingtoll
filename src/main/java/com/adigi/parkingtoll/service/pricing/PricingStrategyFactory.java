@@ -1,6 +1,6 @@
-package com.adigi.parkingtoll.algorithm.pricing;
+package com.adigi.parkingtoll.service.pricing;
 
-import com.adigi.parkingtoll.algorithm.pricing.strategy.PricingStrategy;
+import com.adigi.parkingtoll.service.pricing.strategy.PricingStrategy;
 import com.adigi.parkingtoll.exception.NotDefiniedAlgorithmException;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;

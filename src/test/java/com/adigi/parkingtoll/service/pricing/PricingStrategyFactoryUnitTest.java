@@ -1,8 +1,8 @@
-package com.adigi.parkingtoll.algorithm.pricing;
+package com.adigi.parkingtoll.service.pricing;
 
-import com.adigi.parkingtoll.algorithm.pricing.strategy.FeeAndHoursPricingStrategy;
-import com.adigi.parkingtoll.algorithm.pricing.strategy.OnlyHoursPricingStrategy;
-import com.adigi.parkingtoll.algorithm.pricing.strategy.PricingStrategy;
+import com.adigi.parkingtoll.service.pricing.strategy.FeeAndHoursPricingStrategy;
+import com.adigi.parkingtoll.service.pricing.strategy.OnlyHoursPricingStrategy;
+import com.adigi.parkingtoll.service.pricing.strategy.PricingStrategy;
 import com.adigi.parkingtoll.model.enums.PricingPolicy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
