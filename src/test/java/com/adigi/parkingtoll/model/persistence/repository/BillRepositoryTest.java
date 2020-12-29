@@ -29,40 +29,41 @@ public class BillRepositoryTest {
     private TestEntityManager entityManager;
 
     private final String PARKING_NAME = "test";
+    private final String PLATE = "AAa";
 
     //TODO refactor using builder
     @Test
-    public void retrieveByParkingNameParkingSlotIdBillId_getBill() {
+    public void retrieveByParkingNamePlate_getBill() {
 
         // given
         ParkingSlot ps = new ParkingSlot();
         Bill bill = configureBill(ps);
 
-        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId(PARKING_NAME, ps.getId(), bill.getId());
+        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId(PARKING_NAME, bill.getReservation().getPlate());
 
         assertEquals(billDb, bill);
     }
 
     @Test
-    public void retrieveByParkingNameParkingSlotIdBillId_whenWrongName_getNull() {
+    public void retrieveByParkingNamePlate_whenWrongParkingName_getNull() {
 
         // given
         ParkingSlot ps = new ParkingSlot();
         Bill bill = configureBill(ps);
 
-        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId("Wrong", ps.getId(), bill.getId());
+        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId("Wrong", bill.getReservation().getPlate());
 
         assertNull(billDb);
     }
 
     @Test
-    public void retrieveByParkingNameParkingSlotIdBillId_whenWrongParkingSlot_getNull() {
+    public void retrieveByParkingNamePlate_whenWrongPlate_getNull() {
 
         // given
         ParkingSlot ps = new ParkingSlot();
         Bill bill = configureBill(ps);
 
-        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId(PARKING_NAME, ps.getId() + 1, bill.getId());
+        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId(PARKING_NAME, "AAA");
 
         assertNull(billDb);
     }
@@ -79,9 +80,11 @@ public class BillRepositoryTest {
         ps.setEngineType(ELECTRIC_50KW);
         ps.setFloor(2);
         ps.setParkingSlotState(FREE);
-        Reservation r = new Reservation();
+        Reservation r = Reservation.builder().plate(PLATE).build();
         Bill bill = Bill.builder().prepareDefault().build();
 
+        //TODO change to
+        //setEachOther( p, ps, r, bill);
         setEachOther(p, ps,
                 (a, b) -> a.setParkingSlots(Set.of(b)),
                 (b, a) -> b.setParking(a));
@@ -98,6 +101,18 @@ public class BillRepositoryTest {
         entityManager.persistAndFlush(bill);
 
         return bill;
+    }
+
+    private void setEachOther(Parking p, ParkingSlot ps, Reservation r, Bill bill) {
+        setEachOther(p, ps,
+                (a, b) -> a.setParkingSlots(Set.of(b)),
+                (b, a) -> b.setParking(a));
+        setEachOther(ps, r,
+                (a, b) -> a.setReservation(b),
+                (b, a) -> b.setParkingSlot(a));
+        setEachOther(bill, r,
+                (a, b) -> a.setReservation(b),
+                (b, a) -> b.setBill(a));
     }
 
     private <T, U> void setEachOther(T t, U u, BiConsumer<T, U> saveFirst, BiConsumer<U, T> saveSecond) {

@@ -27,12 +27,12 @@ public class BillService {
     @Autowired
     private ExceptionService exceptionService;
 
-    public Bill payBill(String parkingNameUid, Long parkingSlotId, Long billId) {
+    public Bill payBill(String parkingNameUid, String plate) {
 
-        Bill bill = billRepository.retrieveByParkingNameParkingSlotIdBillId(parkingNameUid, parkingSlotId, billId);
+        Bill bill = billRepository.retrieveByParkingNameParkingSlotIdBillId(parkingNameUid, plate);
 
         exceptionService.checkNotNull(bill,
-                String.format("Bill id[%d] for slot [%d] and parking [%s]", billId, parkingSlotId, parkingNameUid));
+                String.format("Bill for car [%s] and parking [%s]", plate, parkingNameUid));
 
         parkingSlotStateService.changeState(bill, PAYED, StateData.builder().build());
 
@@ -47,12 +47,12 @@ public class BillService {
      * @param parkingSlotId
      * @return
      */
-    public Bill calculateBillForLeavingCar(String parkingNameUid, Long parkingSlotId) {
+    public Bill calculateBillForLeavingCar(String parkingNameUid, String plate) {
 
-        Bill bill = retrieveBill(parkingNameUid, parkingSlotId);
+        Bill bill = retrieveBill(parkingNameUid, plate);
 
         exceptionService.checkNotNull(bill,
-                String.format("Bill for slot [%d] and parking [%s]", parkingSlotId, parkingNameUid));
+                String.format("Bill for plate [%s] and parking [%s]", plate, parkingNameUid));
 
         parkingSlotStateService.changeState(bill, PAYING, StateData.builder().localPaymentDateTime(timeService.getNow()).build());
 
@@ -60,11 +60,14 @@ public class BillService {
     }
 
 
-    private Bill retrieveBill(String parkingNameUid, Long parkingSlotId) {
-        return billRepository.findFirstByReservationParkingSlotIdAndReservationParkingSlotParkingNameUid(
-                parkingSlotId,
-                parkingNameUid
-        );
+    private Bill retrieveBill(String parkingNameUid, String plate) {
+        return billRepository.findFirstByReservationParkingSlotParkingNameUidAndReservationPlate(parkingNameUid, plate);
     }
+//    private Bill retrieveBill(String parkingNameUid, Long parkingSlotId) {
+//        return billRepository.findFirstByReservationParkingSlotIdAndReservationParkingSlotParkingNameUid(
+//                parkingSlotId,
+//                parkingNameUid
+//        );
+//    }
 
 }

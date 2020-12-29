@@ -48,7 +48,7 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
     private ObjectMapperService mapper;
 
 
-    public String PLATE = "PLATE";
+    public String PLATE = "plate";
 
     @BeforeEach
     public void setUp() {
@@ -194,14 +194,14 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
 
         // when
         MvcResult mvcResult = performGetParkingSlot(helper.getRequestParams(), NAME_PARKING2).andReturn();
-        long id = mapper.getResponseObject(mvcResult, ParkingSlot.class).getId();
-        BillDTO calculatedBillDto = mapper.getBillDTO(performGetCalculateBill(NAME_PARKING2, id));
-        performPayBill(NAME_PARKING2, id, calculatedBillDto.getId());
-        ResultActions updatedParkingSlot = performUpdateParkingSlotToFree(NAME_PARKING2, id);
+        long slotId = mapper.getResponseObject(mvcResult, ParkingSlot.class).getId();
+        performGetCalculateBill(NAME_PARKING2, PLATE);
+        performPayBill(NAME_PARKING2, PLATE);
+        ResultActions updatedParkingSlot = performUpdateParkingSlotToFree(NAME_PARKING2, slotId);
 
         // then verify
         verifyGetParkingSlot(updatedParkingSlot, engingeType, NAME_PARKING2, false);
-        verifyReservationtForLeavingCar(parkingSlotRepository.findById(id).get());
+        verifyReservationtForLeavingCar(parkingSlotRepository.findById(slotId).get());
 
     }
 
@@ -209,21 +209,21 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
     public void whenUpdateParkingSlotToFree_whenGetParkingSlot_getCorrectStatusOfParkingSlot() throws Exception {
 
         // given
-        String engingeType = EngineType.ELECTRIC_20KW.toString();
-        helper.addPlate(PLATE).addEngineType(engingeType);
+        String engineType = EngineType.ELECTRIC_20KW.toString();
+        helper.addPlate(PLATE).addEngineType(engineType);
 
         // when
         MvcResult mvcResult = performGetParkingSlot(helper.getRequestParams(), NAME_PARKING2).andReturn();
-        long id = mapper.getResponseObject(mvcResult, ParkingSlot.class).getId();
-        BillDTO calculatedBillDto = mapper.getBillDTO(performGetCalculateBill(NAME_PARKING2, id));
-        performPayBill(NAME_PARKING2, id, calculatedBillDto.getId());
-        performUpdateParkingSlotToFree(NAME_PARKING2, id);
+        long slotId = mapper.getResponseObject(mvcResult, ParkingSlot.class).getId();
+        performGetCalculateBill(NAME_PARKING2, PLATE);
+        performPayBill(NAME_PARKING2, PLATE);
+        performUpdateParkingSlotToFree(NAME_PARKING2, slotId);
 
         // then
-        performVerifyGetParkingSlot(helper.getRequestParams(), NAME_PARKING2, engingeType);
+        performVerifyGetParkingSlot(helper.getRequestParams(), NAME_PARKING2, engineType);
 
         // verify correct entity status
-        verifyEntitiesStatusForIncomingCar(id, PLATE);
+        verifyEntitiesStatusForIncomingCar(slotId, PLATE);
     }
 
     /**

@@ -33,7 +33,7 @@ public class ParkingSlot {
     private Parking parking;
 
     @NotBlank(message = "Position is mandatory")
-    @Column(name = "POSITION", length = 5, nullable = false)   //TODO uso tutte e due
+    @Column(name = "POSITION", length = 5, nullable = false)
     private String position;
 
     @NotNull(message = "Floor is mandatory")
@@ -50,7 +50,7 @@ public class ParkingSlot {
     @ColumnDefault("false")
     private boolean reserved;
 
-    @OneToOne(mappedBy = "parkingSlot",cascade = {CascadeType.ALL})
+    @OneToOne(mappedBy = "parkingSlot", cascade = {CascadeType.ALL})
     private Reservation reservation;
 
     @Column(name = "PARKINGSLOT_STATE")

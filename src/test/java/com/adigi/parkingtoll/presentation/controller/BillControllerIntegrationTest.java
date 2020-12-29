@@ -73,7 +73,7 @@ public class BillControllerIntegrationTest extends ReqPerformer {
     }
 
     /**
-     * Checks that when it is calculated the bill - for a leaving car - it is returned the correct bill:
+     * Checks that when it is calculated the bill it is returned the correct bill:
      * <ul>
      *     <li>BillDTO amount is not null</li>
      *     <li>Reservation payment time is the same payment time</li>
@@ -85,23 +85,24 @@ public class BillControllerIntegrationTest extends ReqPerformer {
      * @throws Exception
      */
     @Test
-    public void givenParkingAndParkingSlot_whenCalculateBillForLeavingCar_getCorrectBill() throws Exception {
+    public void givenParkingAndPlate_whenCalculateBill_getCorrectBill() throws Exception {
 
         // given
-        helper.addPlate("PLATE").addEngineType(EngineType.ELECTRIC_20KW.toString());
+        String plate = "plate";
+        helper.addPlate(plate).addEngineType(EngineType.ELECTRIC_20KW.toString());
         Mockito.when(timeService.getNow()).thenReturn(paymentTimeMock);
 
         // when
-        long parkingSlotId = performGetParkingSlotGetId(parking);
-        ResultActions resultCalculatedBill = performGetCalculateBill(parking, parkingSlotId);
+        ParkingSlot parkingSlot = performGetParkingSlotGetParkingSlot(parking);
+        ResultActions resultCalculatedBill = performGetCalculateBill(parking, plate);
 
         // then
         BillDTO billDTO = verifyResCalculatedBill(resultCalculatedBill);
-        verifyEntitiesForCalculateBillWhenLeavingCar(parkingSlotId, billDTO.getId(), paymentTimeMock);
+        verifyEntitiesForCalculateBillWhenLeavingCar(parkingSlot.getId(), billDTO.getId(), paymentTimeMock);
     }
 
     /**
-     * Checks that when it pays the bill - for a leaving car - it is returned the correct bill:
+     * Checks that when it pays the bill it is returned the correct bill:
      * <ul>
      *     <li>BillDTO amount is null</li>
      *     <li>Reservation payed is true</li>
@@ -111,27 +112,28 @@ public class BillControllerIntegrationTest extends ReqPerformer {
      * @throws Exception
      */
     @Test
-    public void givenParkingParkingSlotIdAndBillId_whenPayBill_getCorrectBill() throws Exception {
+    public void givenParkingPlate_whenPayBill_getCorrectBill() throws Exception {
 
         // given
-        helper.addPlate("PLATE").addEngineType(EngineType.ELECTRIC_20KW.toString());
+        String plate = "plate";
+        helper.addPlate(plate).addEngineType(EngineType.ELECTRIC_20KW.toString());
         Mockito.when(timeService.getNow()).thenReturn(paymentTimeMock);
 
         // when
-        long parkingSlotId = performGetParkingSlotGetId(parking);
-        BillDTO calculatedBillDto = mapper.getBillDTO(performGetCalculateBill(parking, parkingSlotId));
-        ResultActions payedBill = performPayBill(parking, parkingSlotId, calculatedBillDto.getId());
+        ParkingSlot parkingSlot = performGetParkingSlotGetParkingSlot(parking);
+        BillDTO calculatedBillDto = mapper.getBillDTO(performGetCalculateBill(parking, plate));
+        ResultActions payedBill = performPayBill(parking, plate);
 
         // then
         BillDTO payedBillDto = verifyResPayBill(payedBill, calculatedBillDto);
-        verifyEntitiesForPayBillWhenLeavingCar(parkingSlotId, payedBillDto.getId());
+        verifyEntitiesForPayBillWhenLeavingCar(parkingSlot.getId(), payedBillDto.getId());
     }
 
-    private Long performGetParkingSlotGetId(String parking) throws Exception {
+    private ParkingSlot performGetParkingSlotGetParkingSlot(String parking) throws Exception {
 
         MvcResult resultGetParkingSlot = performGetParkingSlot(helper.getRequestParams(), parking).andReturn();
 
-        return mapper.getResponseObject(resultGetParkingSlot, ParkingSlot.class).getId();
+        return mapper.getResponseObject(resultGetParkingSlot, ParkingSlot.class);
     }
 
     private void verifyEntitiesForCalculateBillWhenLeavingCar(Long parkingSlotId, Long billId, LocalDateTime paymentTimeMock) {

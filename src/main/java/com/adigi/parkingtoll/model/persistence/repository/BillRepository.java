@@ -7,24 +7,25 @@ import org.springframework.data.repository.query.Param;
 
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
-    //TODO revert order
+    //TODO remove
     Bill findFirstByReservationParkingSlotIdAndReservationParkingSlotParkingNameUid(Long id, String parkingNameUid);
 
+    Bill findFirstByReservationParkingSlotParkingNameUidAndReservationPlate(String parkingNameUid, String plate);
+
     /**
-     * Return bill by parkingName , pslotId and billId
+     * Return bill by parkingName and plate
      *
-     * @param parkingNameUid
-     * @param parkingSlotId
-     * @param billId
-     * @return
+     * @param parkingNameUid parking name
+     * @param plate          vehicle plate
+     * @return Bill
      */
     @Query("select b from Bill b " +
-            "inner join b.reservation.parkingSlot ps " +
+            "inner join b.reservation res " +
+            "inner join res.parkingSlot ps " +
             "where ps.parking.nameUid = :parkingName " +
-            "and ps.id = :pslotId " +
-            "and b.id = :billId")
+            "and res.plate = :plate")
     Bill retrieveByParkingNameParkingSlotIdBillId(
             @Param("parkingName") String parkingNameUid,
-            @Param("pslotId") Long parkingSlotId,
-            @Param("billId") Long billId);
+            @Param("plate") String plate
+    );
 }

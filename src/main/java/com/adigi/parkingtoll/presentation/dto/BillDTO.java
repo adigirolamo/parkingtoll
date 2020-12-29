@@ -21,4 +21,6 @@ public class BillDTO {
 
     private ParkingSlotState parkingSlotState;
 
+    private long parkingSlotId;
+
 }

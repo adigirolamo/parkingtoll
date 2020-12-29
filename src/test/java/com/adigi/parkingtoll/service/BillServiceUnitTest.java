@@ -41,7 +41,7 @@ class BillServiceUnitTest {
 
         // when
         Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            billService.payBill(null, null, null);
+            billService.payBill(null, null);
         });
 
         assertTrue(exception.getMessage().contains("Not found Bill"));

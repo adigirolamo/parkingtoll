@@ -9,7 +9,7 @@ public interface PresentationConstant {
     public String REQGET_GET_PARKING_SLOT_REQ_PARAM = "/parkings/{parkingNameUid}/parkingslots?plate={idplate}&engineType={enginetype}";
     public String REQPUT_UPDATE_PARKINGSLOT_TO_FREE = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}";
     public String REQGET_CALCULATE_BILL = REQPUT_UPDATE_PARKINGSLOT_TO_FREE + "/reservation/bill";
-    public String REQPUT_PAY_BILL = REQGET_CALCULATE_BILL + "/{billId}";
+    public String REQPUT_PAY_BILL = REQGET_CALCULATE_BILL;
 
     // Request parmas
     public String PARAM_PLATE = "plate";

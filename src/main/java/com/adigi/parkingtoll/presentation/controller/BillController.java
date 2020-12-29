@@ -1,6 +1,7 @@
 package com.adigi.parkingtoll.presentation.controller;
 
 import com.adigi.parkingtoll.model.persistence.entity.Bill;
+import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.presentation.dto.BillDTO;
 import com.adigi.parkingtoll.service.BillService;
 import org.modelmapper.ModelMapper;
@@ -26,28 +27,27 @@ public class BillController {
 
     //TODO this is case car is going to leave, parking appliance (client) recognize plate
     // and asks BE to get the bill with calculate amount (PAYING state)
-    //TODO change to plate from PSID . Client show amount
-    @GetMapping(value = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    // Client show amount
+    @GetMapping(value = "/parkings/{parkingNameUid}/parkingslots/{plate}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> calculateBillForLeavingCar(
             @PathVariable String parkingNameUid,
-            @PathVariable Long parkingSlotId
+            @PathVariable String plate
     ) {
-        Bill bill = billService.calculateBillForLeavingCar(parkingNameUid, parkingSlotId);
+        Bill bill = billService.calculateBillForLeavingCar(parkingNameUid, plate);
 
         return createResponse(bill);
     }
 
     //TODO this is the case after person has payed the amount. Appliance (client) send BE PUT bill payed for plate
     // BE answers with bill status and at this point the client get Parking Slot ID and asks BE to free that PS
-    //with call updateParkingSlotToFree of PSC
+    // with call updateParkingSlotToFree of PSC
     //TODO change to plate
-    @PutMapping(value = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}/reservation/bill/{billId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/parkings/{parkingNameUid}/parkingslots/{plate}/reservation/bill", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillDTO> payBill(
             @PathVariable String parkingNameUid,
-            @PathVariable Long parkingSlotId,
-            @PathVariable Long billId
+            @PathVariable String plate
     ) {
-        Bill bill = billService.payBill(parkingNameUid, parkingSlotId, billId);
+        Bill bill = billService.payBill(parkingNameUid, plate);
 
         return createResponse(bill);
     }
@@ -59,9 +59,12 @@ public class BillController {
 
     private BillDTO convertToDto(Bill bill) {
 
+        ParkingSlot parkingSlot = bill.getReservation().getParkingSlot();
+
         BillDTO billDTO = modelMapper.map(bill, BillDTO.class);
         billDTO.setPlate(bill.getReservation().getPlate());
-        billDTO.setParkingSlotState(bill.getReservation().getParkingSlot().getParkingSlotState());
+        billDTO.setParkingSlotState(parkingSlot.getParkingSlotState());
+        billDTO.setParkingSlotId(parkingSlot.getId());
 
         return billDTO;
     }

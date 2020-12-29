@@ -81,12 +81,12 @@ public abstract class ReqPerformer {
         return performReq((s, t) -> put(s, t), REQPUT_UPDATE_PARKINGSLOT_TO_FREE, parkingName, parkingSlotId);
     }
 
-    public ResultActions performGetCalculateBill(String parkingName, Long parkingSlotId) throws Exception {
-        return performReq((s, t) -> get(s, t), REQGET_CALCULATE_BILL, parkingName, parkingSlotId);
+    public ResultActions performGetCalculateBill(String parkingName, String plate) throws Exception {
+        return performReq((s, t) -> get(s, t), REQGET_CALCULATE_BILL, parkingName, plate);
     }
 
-    public ResultActions performPayBill(String parkingName, Long parkingSlotId, Long billId) throws Exception {
-        return performReq((s, t) -> put(s, t), REQPUT_PAY_BILL, parkingName, parkingSlotId, billId);
+    public ResultActions performPayBill(String parkingName, String plate) throws Exception {
+        return performReq((s, t) -> put(s, t), REQPUT_PAY_BILL, parkingName, plate);
     }
 
 }
