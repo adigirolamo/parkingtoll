@@ -5,11 +5,14 @@ import lombok.Getter;
 @Getter
 public enum ParkingSlotState implements BaseEnum {
 
-    FREE("FREE"), RESERVED("RESERVED"), PAYING("PAYING"), PAYED("PAYED");
+    FREE("FREE", "Parking slot"), RESERVED("RESERVED", "Parking slot"),
+    PAYING("PAYING", "Bill"), PAYED("PAYED", "Bill");
 
     private String code;
+    private String associatedEntity;
 
-    ParkingSlotState(String code) {
+    ParkingSlotState(String code, String associatedEntity) {
         this.code = code;
+        this.associatedEntity = associatedEntity;
     }
 }

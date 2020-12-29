@@ -11,8 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import static com.adigi.parkingtoll.model.enums.ParkingSlotState.*;
 
@@ -23,8 +24,10 @@ public class ParkingSlotStateService {
     private ParkingSlotChangeState parkingSlotChangeState;
     private ReservationChangeState reservationChangeState;
 
-    private Map<ParkingSlotState, Set<ParkingSlotState>> allowedChanges = new HashMap<>();
-    private String defaultMessage;
+    @Autowired
+    private StateMessageService stateMessageService;
+
+    private Map<ParkingSlotState, Set<ParkingSlotState>> allowedChanges;
 
     @Autowired
     public ParkingSlotStateService(BillChangeState billChangeState,
@@ -50,7 +53,6 @@ public class ParkingSlotStateService {
         allowedChanges.put(PAYING, Set.of(PAYING, PAYED));
         allowedChanges.put(PAYED, Set.of(FREE));
 
-        initDefaultMessage();
     }
 
     public void changeState(ParkingSlot parkingSlot, ParkingSlotState nextState, StateData data) {
@@ -71,37 +73,17 @@ public class ParkingSlotStateService {
 
     void checkChange(ParkingSlotState from, ParkingSlotState to) {
         if (!isAllowed(from, to)) {
-            throw new WrongStateException(exceptionMessage(from, to));
+            throw new WrongStateException(
+                    stateMessageService.exceptionMessage(from, to, getAllowedStates(from)));
         }
-    }
-
-    String exceptionMessage(ParkingSlotState from, ParkingSlotState to) {
-        return String.format(defaultMessage, from.toString(), to.toString());
     }
 
     private boolean isAllowed(ParkingSlotState from, ParkingSlotState to) {
         return allowedChanges.get(from).contains(to);
     }
 
-    private void initDefaultMessage() {
-
-        StringJoiner joiner = new StringJoiner("");
-
-        joiner.add("Change state from %s to %s is not allowed. Supported state ");
-
-        for (Map.Entry<ParkingSlotState, Set<ParkingSlotState>> entry : allowedChanges.entrySet()) {
-//TODO refactor in single method below
-            joiner.add("for [");
-            joiner.add(entry.getKey().toString());
-
-            joiner.add("] allowed [");
-            String joinValues = entry.getValue().stream().map(Objects::toString).collect(Collectors.joining(" , "));
-
-            joiner.add(joinValues);
-            joiner.add("]; ");
-        }
-
-        defaultMessage = joiner.toString();
+    private Set<ParkingSlotState> getAllowedStates(ParkingSlotState from) {
+        return allowedChanges.get(from);
     }
 
 }

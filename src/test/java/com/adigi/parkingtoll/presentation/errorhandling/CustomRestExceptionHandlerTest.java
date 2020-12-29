@@ -112,7 +112,7 @@ class CustomRestExceptionHandlerTest {
         );
 
         // then
-        verifyStatusMessage(response, BAD_REQUEST, "Change state from");
+        verifyStatusMessage(response, BAD_REQUEST, "Allowed state from");
     }
 
     @Test

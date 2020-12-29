@@ -2,36 +2,41 @@ package com.adigi.parkingtoll.service.state;
 
 import com.adigi.parkingtoll.exception.WrongStateException;
 import com.adigi.parkingtoll.model.enums.ParkingSlotState;
+import com.adigi.parkingtoll.service.state.strategy.BillChangeState;
+import com.adigi.parkingtoll.service.state.strategy.ParkingSlotChangeState;
+import com.adigi.parkingtoll.service.state.strategy.ReservationChangeState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.adigi.parkingtoll.model.enums.ParkingSlotState.*;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {ParkingSlotStateService.class})
 class ParkingSlotStateServiceUnitTest {
 
-    @InjectMocks
+    @MockBean
+    private BillChangeState billChangeState;
+    @MockBean
+    private ParkingSlotChangeState parkingSlotChangeState;
+    @MockBean
+    private ReservationChangeState reservationChangeState;
+    @MockBean
+    private StateMessageService stateMessageService;
+
+    @Autowired
     private ParkingSlotStateService parkingSlotStateService;
 
     @BeforeEach
     public void setUP() {
         parkingSlotStateService.init();
-    }
-
-    @Test
-    public void givenFromFREEtoFREE_whenExceptionMessage_getCorrectMessage() {
-
-        String exceptionMessage = parkingSlotStateService.exceptionMessage(FREE, FREE);
-
-        assertThat(exceptionMessage, containsString("is not allowed. Supported state for"));
-        assertThat(exceptionMessage, containsString("Change state from FREE to FREE is not allowed"));
-        assertThat(exceptionMessage, containsString("for [PAYED] allowed [FREE];"));
     }
 
     @Test
@@ -80,6 +85,8 @@ class ParkingSlotStateServiceUnitTest {
     @Test
     public void givenFromPAYEDtoWrongStates_whenCheckChange_throwsWrongStateException() {
 
+        when(stateMessageService.exceptionMessage(any(), any(), any())).thenReturn("");
+
         executeCheckChangeThrowException(PAYED, PAYED);
         executeCheckChangeThrowException(PAYED, PAYING);
         executeCheckChangeThrowException(PAYED, RESERVED);
@@ -95,14 +102,8 @@ class ParkingSlotStateServiceUnitTest {
 
     private void executeCheckChangeThrowException(ParkingSlotState from, ParkingSlotState to) {
 
-        // when
         Exception exception = assertThrows(WrongStateException.class, () -> {
             parkingSlotStateService.checkChange(from, to);
         });
-
-        String expectedMsg = String.format("Change state from %s to %s is not allowed", from.toString(), to.toString());
-
-        // then
-        assertThat(exception.getMessage(), containsString(expectedMsg));
     }
 }
