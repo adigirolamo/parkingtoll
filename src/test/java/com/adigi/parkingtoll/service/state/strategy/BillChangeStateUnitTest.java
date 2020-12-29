@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {BillChangeState.class, PricingStrategyService.class})
+@ContextConfiguration(classes = {BillChangeState.class})
 class BillChangeStateUnitTest {
 
     @MockBean

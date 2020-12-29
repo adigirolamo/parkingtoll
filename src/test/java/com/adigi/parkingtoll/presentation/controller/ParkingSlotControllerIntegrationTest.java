@@ -127,6 +127,7 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
 
         // when
         performVerifyGetParkingSlot(requestParams, NAME_PARKING1, helper.getFirstEngineType());
+        changePlate(requestParams, "plate1");
         performVerifyGetParkingSlot(requestParams, NAME_PARKING1, helper.getFirstEngineType());
         performGetParkingSlot(helper.getRequestParams(), NAME_PARKING1)
                 // then
@@ -138,10 +139,11 @@ class ParkingSlotControllerIntegrationTest extends ReqPerformer {
     public void givenDifferentParking_whenRequestMultipleGetParkingSlots_getParkingSlotFromDifferentParking() throws Exception {
         // given
         MultiValueMap<String, String> requestParams = helper.addPlate(PLATE).addEngineType(EngineType.GASOLINE.toString()).getRequestParams();
-
         // when
         performGetParkingSlot(requestParams, NAME_PARKING1);
+        changePlate(requestParams, "plate1");
         performGetParkingSlot(requestParams, NAME_PARKING1);
+        changePlate(requestParams, "plate2");
         performGetParkingSlot(requestParams, NAME_PARKING1);
 
         // then verify

@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ReservationChangeState.class, LocalDateTimeService.class})
+@ContextConfiguration(classes = {ReservationChangeState.class})
 class ReservationChangeStateUnitTest {
 
     @MockBean

@@ -11,6 +11,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -23,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(classes = {ParkingtollApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Transactional
 class CustomRestExceptionHandlerTest {
 
     @Autowired
@@ -93,6 +95,24 @@ class CustomRestExceptionHandlerTest {
 
         // then
         verifyStatusMessage(response, BAD_REQUEST, "parameter is missing");
+    }
+
+    @Test
+    public void givenDataIntegrityViolationException_whenRequest_getBAD_REQUEST() {
+
+        // when
+        ResponseEntity<Object> response = testRestTemplate.exchange(
+                REQGET_GET_PARKING_SLOT_REQ_PARAM, HttpMethod.GET, request, Object.class,
+                "PARKING2", "plate", "GASOLINE"
+        );
+
+        ResponseEntity<Object> errorResponse = testRestTemplate.exchange(
+                REQGET_GET_PARKING_SLOT_REQ_PARAM, HttpMethod.GET, request, Object.class,
+                "PARKING1", "plate", "GASOLINE"
+        );
+
+        // then
+        verifyStatusMessage(errorResponse, BAD_REQUEST, "SQL");
     }
 
     @Test

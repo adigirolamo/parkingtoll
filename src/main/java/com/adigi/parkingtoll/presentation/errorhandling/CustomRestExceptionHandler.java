@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -114,6 +115,21 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         //
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), request);
         add(apiError, ex);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getHttpStatus());
+    }
+
+    /**
+     * Handle DataIntegrityViolationException.
+     *
+     * @param ex      DataIntegrityViolationException exception
+     * @param request webrequest
+     * @return ResponseEntity<Object>
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    protected ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex, WebRequest request) {
+        log.info(ex.getClass().getName());
+        //
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), request);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getHttpStatus());
     }
 

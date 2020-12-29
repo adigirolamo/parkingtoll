@@ -89,4 +89,8 @@ public abstract class ReqPerformer {
         return performReq((s, t) -> put(s, t), REQPUT_PAY_BILL, parkingName, plate);
     }
 
+    public void changePlate(MultiValueMap<String, String> requestParams, String plate) {
+        requestParams.remove(PARAM_PLATE);
+        requestParams.add(PARAM_PLATE, plate);
+    }
 }

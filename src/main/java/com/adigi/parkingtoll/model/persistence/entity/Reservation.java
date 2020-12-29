@@ -6,6 +6,12 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"PLATE"}, name = "UK_PLATE"),
+                @UniqueConstraint(columnNames = {"PARKINGSLOT_ID"})
+        }
+)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +28,7 @@ public class Reservation {
     private String plate;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PARKINGSLOT_ID", unique = true)
+    @JoinColumn(name = "PARKINGSLOT_ID")
     private ParkingSlot parkingSlot;
 
     @Column
