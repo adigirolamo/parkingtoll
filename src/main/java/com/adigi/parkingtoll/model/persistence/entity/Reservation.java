@@ -5,6 +5,24 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
+/**
+ * Reservation entity.
+ * It holds all the data related to a parking slot when a vehicle is using it.
+ * <p>Reservation data</p>
+ * <ul>
+ *     <li>vehicle arrival time</li>
+ *     <li>vehicle payment time</li>
+ *     <li>vehicle departure time</li>
+ *     <li>vehicle's plate</li>
+ *     <li>vehicle's bill</li>
+ * </ul>
+ * <p>Note</p>
+ * <ul>
+ *     <li>A Parking slot has associated a reservation (One to One relation).</li>
+ *     <li>Reservation has associated a bill (One to One relation).</li>
+ * </ul>
+ * Therefore there is a direct link between a parking slot, its reservation and its bill
+ */
 @Entity
 @Table(
         uniqueConstraints = {
@@ -35,19 +53,37 @@ public class Reservation {
     @JoinColumn(name = "PARKINGSLOT_ID")
     private ParkingSlot parkingSlot;
 
+    /**
+     * vehicle arrival time.
+     * <p>
+     * It can be null
+     */
     @Column
     private java.time.LocalDateTime localArriveDateTime;
 
+    /**
+     * vehicle departure time
+     * <p>
+     * It can be null (ex. when the car leaves)
+     */
     @Column
     private java.time.LocalDateTime localDepartureDateTime;
 
+    /**
+     * vehicle payment time
+     * <p>
+     * It can be null (ex. when the car leaves)
+     */
     @Column
     private java.time.LocalDateTime localPaymentDateTime;
 
     @Column
     @ColumnDefault("true")
-    private Boolean payed;
+    private Boolean paid;
 
+    /**
+     * @see Bill
+     */
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Bill bill;

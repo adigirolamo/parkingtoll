@@ -42,7 +42,7 @@ public class ParkingSlotServiceUnitTest {
                     "ParkingUI", "PLATE", EngineType.GASOLINE);
         });
 
-        assertTrue(exception.getMessage().contains("Not found ParkingSlot"));
+        assertTrue(exception.getMessage().contains("ParkingSlot"));
 
     }
 

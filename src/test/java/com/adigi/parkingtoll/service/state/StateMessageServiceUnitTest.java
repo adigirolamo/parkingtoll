@@ -27,24 +27,24 @@ class StateMessageServiceUnitTest {
     }
 
     @Test
-    public void givenFromFREEtoPAYEDallowedRESERVED_whenExceptionMessage_getCorrectMessage() {
+    public void givenFromFREEtoPAIDallowedRESERVED_whenExceptionMessage_getCorrectMessage() {
 
-        String exceptionMessage = stateMessageService.exceptionMessage(FREE, PAYED, Set.of(RESERVED));
+        String exceptionMessage = stateMessageService.exceptionMessage(FREE, PAID, Set.of(RESERVED));
         System.out.println(exceptionMessage);
 
-        assertThat(exceptionMessage, containsString("Parking slot's state is free and it can't change to payed."));
+        assertThat(exceptionMessage, containsString("Parking slot's state is free and it can't change to paid."));
         assertThat(exceptionMessage, containsString("Allowed state from free: reserved"));
     }
 
     @Test
-    public void givenFromPAYINGtoRESERVEDallowedPAYINGPAYED_whenExceptionMessage_getCorrectMessage() {
+    public void givenFromPAYINGtoRESERVEDallowedPAYINGPAID_whenExceptionMessage_getCorrectMessage() {
 
-        String exceptionMessage = stateMessageService.exceptionMessage(PAYING, RESERVED, Set.of(PAYING, PAYED));
+        String exceptionMessage = stateMessageService.exceptionMessage(PAYING, RESERVED, Set.of(PAYING, PAID));
         System.out.println(exceptionMessage);
 
         assertThat(exceptionMessage, containsString("Bill's state is paying and it can't change to reserved."));
         assertThat(exceptionMessage, containsString("Allowed states from paying:"));
-        assertThat(exceptionMessage, containsString("payed"));
+        assertThat(exceptionMessage, containsString("paid"));
         assertThat(exceptionMessage, containsString("paying"));
     }
 }

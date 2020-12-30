@@ -29,7 +29,7 @@ public class PricingStrategyService {
      * @param parking
      * @param reservation related to the vehicle
      * @param now         paying time
-     * @return amount that has to be payed
+     * @return amount that has to be paid
      */
     public BigDecimal calculateAmount(Parking parking, Reservation reservation, LocalDateTime now) {
 

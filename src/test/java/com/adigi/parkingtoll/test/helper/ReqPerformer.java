@@ -37,8 +37,7 @@ public abstract class ReqPerformer {
 
     protected MockMvc mvc;
 
-    protected void init()
-    {
+    protected void init() {
         this.mvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 
         helper.clearParams();
@@ -93,7 +92,7 @@ public abstract class ReqPerformer {
 
         return resultActions
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(CONTENT_TYPE));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
     public ResultActions performGetParkingSlot(MultiValueMap<String, String> requestParams,

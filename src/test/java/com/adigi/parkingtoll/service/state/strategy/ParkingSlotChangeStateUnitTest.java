@@ -24,20 +24,20 @@ class ParkingSlotChangeStateUnitTest {
     @Test
     public void givenReservation_whenGetActualState_getCorrectState() {
         // given
-        ParkingSlot parkingSlot = ParkingSlot.builder().parkingSlotState(PAYED).build();
+        ParkingSlot parkingSlot = ParkingSlot.builder().parkingSlotState(PAID).build();
 
         // when
         ParkingSlotState actualState = parkingSlotChangeState.getActualState(parkingSlot);
 
         // then
-        assertThat(actualState, equalTo(PAYED));
+        assertThat(actualState, equalTo(PAID));
     }
 
     @Test
     public void givenParkingSlot_whenChangeToFREE_getParkingSlotCorrectFields() {
 
         // given
-        ParkingSlot parkingSlot = ParkingSlot.builder().reserved(true).parkingSlotState(PAYED).build();
+        ParkingSlot parkingSlot = ParkingSlot.builder().reserved(true).parkingSlotState(PAID).build();
 
         // when
         parkingSlotChangeState.change(parkingSlot, FREE, StateData.builder().build());
@@ -65,7 +65,7 @@ class ParkingSlotChangeStateUnitTest {
     public void givenParkingSlot_whenChangeToPAYING_getParkingSlotCorrectFields() {
 
         // given
-        ParkingSlot parkingSlot = ParkingSlot.builder().parkingSlotState(PAYED).build();
+        ParkingSlot parkingSlot = ParkingSlot.builder().parkingSlotState(PAID).build();
 
         // when
         parkingSlotChangeState.change(parkingSlot, PAYING, StateData.builder().build());
@@ -75,15 +75,15 @@ class ParkingSlotChangeStateUnitTest {
     }
 
     @Test
-    public void givenParkingSlot_whenChangeToPAYED_getParkingSlotCorrectFields() {
+    public void givenParkingSlot_whenChangeToPAID_getParkingSlotCorrectFields() {
 
         // given
         ParkingSlot parkingSlot = ParkingSlot.builder().parkingSlotState(FREE).build();
 
         // when
-        parkingSlotChangeState.change(parkingSlot, PAYED, StateData.builder().build());
+        parkingSlotChangeState.change(parkingSlot, PAID, StateData.builder().build());
 
         // then
-        assertThat(parkingSlot.getParkingSlotState(), equalTo(PAYED));
+        assertThat(parkingSlot.getParkingSlotState(), equalTo(PAID));
     }
 }

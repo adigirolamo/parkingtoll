@@ -32,7 +32,7 @@ public class BillChangeState extends AbstractChangeState<Bill> {
 
         changeStrategies.put(PAYING, this::payingStrategy);
 
-        changeStrategies.put(PAYED, this::resetBillAmount);
+        changeStrategies.put(PAID, this::resetBillAmount);
 
     }
 

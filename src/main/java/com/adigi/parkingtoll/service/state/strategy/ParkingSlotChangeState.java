@@ -30,7 +30,7 @@ public class ParkingSlotChangeState extends AbstractChangeState<ParkingSlot> {
 
         changeStrategies.put(PAYING, (s, d) -> s.setParkingSlotState(PAYING));
 
-        changeStrategies.put(PAYED, (s, d) -> s.setParkingSlotState(PAYED));
+        changeStrategies.put(PAID, (s, d) -> s.setParkingSlotState(PAID));
 
     }
 

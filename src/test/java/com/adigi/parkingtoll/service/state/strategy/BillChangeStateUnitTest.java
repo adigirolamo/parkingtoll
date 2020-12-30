@@ -34,13 +34,13 @@ class BillChangeStateUnitTest {
     @Test
     public void givenReservation_whenGetActualState_getCorrectState() {
         // given
-        Bill bill = buildBill(PAYED);
+        Bill bill = buildBill(PAID);
 
         // when
         ParkingSlotState actualState = billChangeState.getActualState(bill);
 
         // then
-        assertThat(actualState, equalTo(PAYED));
+        assertThat(actualState, equalTo(PAID));
     }
 
     @Test
@@ -60,7 +60,7 @@ class BillChangeStateUnitTest {
     public void givenBill_whenChangePAYING_getReservationCorrectFields() {
 
         // given
-        Bill bill = buildBill(PAYED);
+        Bill bill = buildBill(PAID);
         bill.setAmount(BigDecimal.valueOf(5L));
         when(pricingStrategyService.calculateAmount(any(), any(), any())).thenReturn(BigDecimal.ZERO);
 
@@ -72,13 +72,13 @@ class BillChangeStateUnitTest {
     }
 
     @Test
-    public void givenBill_whenChangePAYED_getReservationCorrectFields() {
+    public void givenBill_whenChangePAID_getReservationCorrectFields() {
 
         // given
         Bill bill = Bill.builder().amount(BigDecimal.ONE).build();
 
         // when
-        billChangeState.change(bill, PAYED, StateData.builder().build());
+        billChangeState.change(bill, PAID, StateData.builder().build());
 
         // then
         assertThat(bill.getAmount(), equalTo(BigDecimal.ZERO));

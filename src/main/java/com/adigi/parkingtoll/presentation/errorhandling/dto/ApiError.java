@@ -1,6 +1,7 @@
 package com.adigi.parkingtoll.presentation.errorhandling.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,13 @@ public class ApiError {
 
     @JsonIgnore
     private HttpStatus httpStatus;
+    @Schema(example = "404", description = "Ex. of not found response")
     private int status;
+    @Schema(example = "Not Found", description = "")
     private String error;
+    @Schema(example = "What has not been found", description = "")
     private String message;
+    @Schema(example = "request endpoint", description = "")
     private String path;
     private List<ApiSubError> subErrors = new ArrayList<>();
     //

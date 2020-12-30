@@ -6,17 +6,18 @@ import com.adigi.parkingtoll.presentation.dto.ParkingSlotDTO;
 import com.adigi.parkingtoll.service.ParkingSlotService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @RestController
 @Validated
-public class ParkingSlotController extends BaseRestController<ParkingSlot, ParkingSlotDTO> {
+public class ParkingSlotController extends BaseRestController<ParkingSlot, ParkingSlotDTO> implements ParkingSlotAPI {
 
     private ParkingSlotService parkingSlotService;
 
@@ -26,9 +27,7 @@ public class ParkingSlotController extends BaseRestController<ParkingSlot, Parki
         this.modelMapper = modelMapper;
     }
 
-    //TODO add swagger description
-    //TODO this is case when parking appliance (client) recognize car's plate, check the type and ask BackEnd for free slot
-    @GetMapping(value = "/parkings/{parkingNameUid}/parkingslots", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     public ResponseEntity<ParkingSlotDTO> getParkingSlot(
             @PathVariable String parkingNameUid,
             @RequestParam("plate") @NotBlank @Size(max = 20) String plate,
@@ -40,7 +39,7 @@ public class ParkingSlotController extends BaseRestController<ParkingSlot, Parki
         return createResponse(parkingSlot, parkingNameUid);
     }
 
-    @PutMapping(value = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
     public ResponseEntity<ParkingSlotDTO> updateParkingSlotToFree(
             @PathVariable String parkingNameUid,
             @PathVariable Long parkingSlotId

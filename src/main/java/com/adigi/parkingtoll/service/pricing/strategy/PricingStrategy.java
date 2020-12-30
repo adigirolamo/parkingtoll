@@ -12,12 +12,12 @@ public abstract class PricingStrategy {
     PricingStrategyFunctional pricingStrategyFunctional;
 
     /**
-     * Calculate the amount that has to be payed
+     * Calculate the amount that has to be paid
      *
      * @param fixedAmount       fixed cost. Depending on the strategy chosen by the Parking, it could be not used
      * @param pricePerMinute    price per minute cost
      * @param minutesDifference difference between paying time and arrival time
-     * @return amount to be payed
+     * @return amount to be paid
      */
     public BigDecimal calculateAmount(BigDecimal fixedAmount, BigDecimal pricePerMinute, Long minutesDifference) {
         return pricingStrategyFunctional

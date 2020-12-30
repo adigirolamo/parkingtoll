@@ -57,7 +57,7 @@ public class BillControllerIntegrationTest extends ReqPerformer {
      * <ul>
      *     <li>BillDTO amount is not null</li>
      *     <li>Reservation payment time is the same payment time</li>
-     *     <li>Reservation payed is still false</li>
+     *     <li>Reservation paid is still false</li>
      *     <li>Parking Slot id, retrieved from bill, is the same as the parking slot returned from GetParkingSlot</li>
      * </ul>
      * <p>
@@ -85,7 +85,7 @@ public class BillControllerIntegrationTest extends ReqPerformer {
      * Checks that when it pays the bill it is returned the correct bill:
      * <ul>
      *     <li>BillDTO amount is null</li>
-     *     <li>Reservation payed is true</li>
+     *     <li>Reservation paid is true</li>
      * </ul>
      * <p>
      *
@@ -102,11 +102,11 @@ public class BillControllerIntegrationTest extends ReqPerformer {
         // when
         ParkingSlot parkingSlot = performGetParkingSlotGetParkingSlot(parking);
         BillDTO calculatedBillDto = mapper.getBillDTO(performGetCalculateBill(parking, plate));
-        ResultActions payedBill = performPayBill(parking, plate);
+        ResultActions paidBill = performPayBill(parking, plate);
 
         // then
-        BillDTO payedBillDto = verifyResPayBill(payedBill, calculatedBillDto);
-        verifyEntitiesForPayBillWhenLeavingCar(parkingSlot.getId(), payedBillDto.getId());
+        BillDTO paidBillDto = verifyResPayBill(paidBill, calculatedBillDto);
+        verifyEntitiesForPayBillWhenLeavingCar(parkingSlot.getId(), paidBillDto.getId());
     }
 
     private ParkingSlot performGetParkingSlotGetParkingSlot(String parking) throws Exception {
@@ -122,7 +122,7 @@ public class BillControllerIntegrationTest extends ReqPerformer {
 
         assertEquals(reservation.getParkingSlot().getId(), parkingSlotId);
         assertEquals(reservation.getLocalPaymentDateTime(), paymentTimeMock);
-        assertFalse(reservation.getPayed());
+        assertFalse(reservation.getPaid());
     }
 
     private void verifyEntitiesForPayBillWhenLeavingCar(Long parkingSlotId, Long billId) {
@@ -130,7 +130,7 @@ public class BillControllerIntegrationTest extends ReqPerformer {
         Reservation reservation = billRepository.findById(billId).get().getReservation();
 
         assertEquals(reservation.getParkingSlot().getId(), parkingSlotId);
-        assertTrue(reservation.getPayed());
+        assertTrue(reservation.getPaid());
     }
 
 
@@ -145,17 +145,17 @@ public class BillControllerIntegrationTest extends ReqPerformer {
         return bill;
     }
 
-    private BillDTO verifyResPayBill(ResultActions payedBill, BillDTO calculatedBillDto) throws Exception {
+    private BillDTO verifyResPayBill(ResultActions paidBill, BillDTO calculatedBillDto) throws Exception {
 
-        verifyOk(payedBill);
+        verifyOk(paidBill);
 
-        BillDTO payedBillDto = mapper.getResponseObject(payedBill.andReturn(), BillDTO.class);
+        BillDTO paidBillDto = mapper.getResponseObject(paidBill.andReturn(), BillDTO.class);
 
-        assertEquals(payedBillDto.getId(), calculatedBillDto.getId());
-        assertNotEquals(payedBillDto.getAmount(), calculatedBillDto.getAmount());
-        assertEquals(payedBillDto.getAmount().compareTo(BigDecimal.ZERO), 0);
+        assertEquals(paidBillDto.getId(), calculatedBillDto.getId());
+        assertNotEquals(paidBillDto.getAmount(), calculatedBillDto.getAmount());
+        assertEquals(paidBillDto.getAmount().compareTo(BigDecimal.ZERO), 0);
 
-        return payedBillDto;
+        return paidBillDto;
     }
 
 }

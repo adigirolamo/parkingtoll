@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.adigi</groupId>
     <artifactId>parkingtoll</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>parkingtoll</name>
     <description>Parking toll API using Spring Boot</description>
 
