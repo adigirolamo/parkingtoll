@@ -7,15 +7,19 @@ import org.springframework.data.repository.query.Param;
 
 public interface BillRepository extends JpaRepository<Bill, Long> {
 
-    //TODO remove
-    Bill findFirstByReservationParkingSlotIdAndReservationParkingSlotParkingNameUid(Long id, String parkingNameUid);
-
+    /**
+     * Example of derived query to find bill from parking name UID and plate
+     *
+     * @param parkingNameUid parking unique name
+     * @param plate          vehicle's plate
+     * @return Bill
+     */
     Bill findFirstByReservationParkingSlotParkingNameUidAndReservationPlate(String parkingNameUid, String plate);
 
     /**
-     * Return bill by parkingName and plate
+     * Example of JPQL to find bill from parking name UID and plate
      *
-     * @param parkingNameUid parking name
+     * @param parkingNameUid parking unique name
      * @param plate          vehicle plate
      * @return Bill
      */
@@ -24,7 +28,7 @@ public interface BillRepository extends JpaRepository<Bill, Long> {
             "inner join res.parkingSlot ps " +
             "where ps.parking.nameUid = :parkingName " +
             "and res.plate = :plate")
-    Bill retrieveByParkingNameParkingSlotIdBillId(
+    Bill retrieveByParkingNameAndPlate(
             @Param("parkingName") String parkingNameUid,
             @Param("plate") String plate
     );

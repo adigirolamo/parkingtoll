@@ -1,28 +1,21 @@
 package com.adigi.parkingtoll.presentation.controller;
 
-import com.adigi.parkingtoll.ParkingtollApplication;
 import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistence.entity.Reservation;
 import com.adigi.parkingtoll.model.persistence.repository.ParkingSlotRepository;
 import com.adigi.parkingtoll.presentation.dto.BillDTO;
 import com.adigi.parkingtoll.presentation.dto.ParkingSlotDTO;
-import com.adigi.parkingtoll.test.ObjectMapperService;
-import com.adigi.parkingtoll.test.helper.ReqParamsHelper;
 import com.adigi.parkingtoll.test.helper.ReqPerformer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
 import java.math.BigDecimal;
@@ -31,29 +24,17 @@ import static com.adigi.parkingtoll.test.constant.PresentationConstant.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = {ParkingtollApplication.class})
-@Transactional
+
 class ParkingSlotControllerIntegrationTest extends ReqPerformer {
 
     @Autowired
-    private WebApplicationContext wac;
-
-    @Autowired
     private ParkingSlotRepository parkingSlotRepository;
-
-    @Autowired
-    private ReqParamsHelper helper;
-
-    @Autowired
-    private ObjectMapperService mapper;
-
 
     public String PLATE = "plate";
 
     @BeforeEach
     public void setUp() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        helper.clearParams();
+        init();
     }
 
 

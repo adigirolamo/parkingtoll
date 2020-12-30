@@ -1,27 +1,20 @@
 package com.adigi.parkingtoll.presentation.controller;
 
-import com.adigi.parkingtoll.ParkingtollApplication;
 import com.adigi.parkingtoll.model.enums.EngineType;
 import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistence.entity.Reservation;
 import com.adigi.parkingtoll.model.persistence.repository.BillRepository;
 import com.adigi.parkingtoll.presentation.dto.BillDTO;
 import com.adigi.parkingtoll.service.LocalDateTimeService;
-import com.adigi.parkingtoll.test.ObjectMapperService;
-import com.adigi.parkingtoll.test.helper.ReqParamsHelper;
 import com.adigi.parkingtoll.test.helper.ReqPerformer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletContext;
 import java.math.BigDecimal;
@@ -30,18 +23,7 @@ import java.time.LocalDateTime;
 import static com.adigi.parkingtoll.test.constant.PresentationConstant.NAME_PARKING2;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {ParkingtollApplication.class})
-@Transactional
 public class BillControllerIntegrationTest extends ReqPerformer {
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    @Autowired
-    private ReqParamsHelper helper;
-
-    @Autowired
-    private ObjectMapperService mapper;
 
     @Autowired
     private BillRepository billRepository;
@@ -54,9 +36,7 @@ public class BillControllerIntegrationTest extends ReqPerformer {
 
     @BeforeEach
     public void setUp() {
-        this.mvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-
-        helper.clearParams();
+        init();
 
         paymentTimeMock = LocalDateTime.now().plusHours(1).minusMinutes(23);
         parking = NAME_PARKING2;

@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface ParkingSlotRepository extends JpaRepository<ParkingSlot, Long> {
 
-    List<ParkingSlot> findByParkingNameUid(String parkingNameUid);
-
     List<ParkingSlot> findByParkingNameUidAndEngineTypeAndReservedFalse(String parkingNameUid, EngineType engineType);
 
     ParkingSlot findFirstByIdAndParkingNameUid(Long id, String parkingNameUid);

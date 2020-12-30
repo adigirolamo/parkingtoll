@@ -11,8 +11,14 @@ public abstract class PricingStrategy {
 
     PricingStrategyFunctional pricingStrategyFunctional;
 
-    //TODO search for java functional interface
-    //TODO create a java object that contains the values
+    /**
+     * Calculate the amount that has to be payed
+     *
+     * @param fixedAmount       fixed cost. Depending on the strategy chosen by the Parking, it could be not used
+     * @param pricePerMinute    price per minute cost
+     * @param minutesDifference difference between paying time and arrival time
+     * @return amount to be payed
+     */
     public BigDecimal calculateAmount(BigDecimal fixedAmount, BigDecimal pricePerMinute, Long minutesDifference) {
         return pricingStrategyFunctional
                 .applyStrategy(fixedAmount, pricePerMinute, minutesDifference)

@@ -1,57 +1,61 @@
 package com.adigi.parkingtoll.model.persistence.repository;
 
+import com.adigi.parkingtoll.model.enums.PricingPolicy;
+import com.adigi.parkingtoll.model.persistence.entity.BaseEntityTest;
 import com.adigi.parkingtoll.model.persistence.entity.Bill;
 import com.adigi.parkingtoll.model.persistence.entity.Parking;
-import com.adigi.parkingtoll.model.persistence.entity.ParkingSlot;
 import com.adigi.parkingtoll.model.persistence.entity.Reservation;
-import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
-import java.util.Set;
-import java.util.function.BiConsumer;
 
 import static com.adigi.parkingtoll.model.enums.EngineType.ELECTRIC_50KW;
-import static com.adigi.parkingtoll.model.enums.ParkingSlotState.FREE;
-import static com.adigi.parkingtoll.model.enums.PricingPolicy.ONLY_HOURS;
-import static com.adigi.parkingtoll.model.enums.VehicleType.CAR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@DataJpaTestJunit
-public class BillRepositoryTest {
+public class BillRepositoryTest extends BaseEntityTest {
 
     @Autowired
     private BillRepository billRepository;
 
-    @Autowired
-    private TestEntityManager entityManager;
-
     private final String PARKING_NAME = "test";
     private final String PLATE = "AAa";
 
-    //TODO refactor using builder
+    @BeforeEach
+    public void setUp() {
+        parking = new Parking();
+
+        parking.setNameUid(PARKING_NAME);
+        parking.setPricingPolicy(PricingPolicy.INITIAL_FEE_PLUS_HOURS);
+        entityManager.persistAndFlush(parking);
+    }
+
     @Test
     public void retrieveByParkingNamePlate_getBill() {
 
         // given
-        ParkingSlot ps = new ParkingSlot();
-        Bill bill = configureBill(ps);
+        Reservation r = buildParkingSlotReservationBill(parking, "abc", 1, ELECTRIC_50KW).getReservation();
+        r.setPlate(PLATE);
 
-        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId(PARKING_NAME, bill.getReservation().getPlate());
+        // when
+        entityManager.persistAndFlush(r);
 
-        assertEquals(billDb, bill);
+        Bill billDb = billRepository.retrieveByParkingNameAndPlate(PARKING_NAME, r.getPlate());
+
+        assertEquals(billDb, r.getBill());
     }
 
     @Test
     public void retrieveByParkingNamePlate_whenWrongParkingName_getNull() {
 
         // given
-        ParkingSlot ps = new ParkingSlot();
-        Bill bill = configureBill(ps);
+        Reservation r = buildParkingSlotReservationBill(parking, "abc", 1, ELECTRIC_50KW).getReservation();
+        r.setPlate(PLATE);
 
-        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId("Wrong", bill.getReservation().getPlate());
+        // when
+        entityManager.persistAndFlush(r);
+
+        Bill billDb = billRepository.retrieveByParkingNameAndPlate("Wrong", r.getPlate());
 
         assertNull(billDb);
     }
@@ -60,65 +64,46 @@ public class BillRepositoryTest {
     public void retrieveByParkingNamePlate_whenWrongPlate_getNull() {
 
         // given
-        ParkingSlot ps = new ParkingSlot();
-        Bill bill = configureBill(ps);
+        Reservation r = buildParkingSlotReservationBill(parking, "abc", 1, ELECTRIC_50KW).getReservation();
+        r.setPlate(PLATE);
 
-        Bill billDb = billRepository.retrieveByParkingNameParkingSlotIdBillId(PARKING_NAME, "AAA");
+        // when
+        entityManager.persistAndFlush(r);
+
+        Bill billDb = billRepository.retrieveByParkingNameAndPlate(PARKING_NAME, "AAA");
 
         assertNull(billDb);
     }
 
-    //TODO refactor
-    private Bill configureBill(ParkingSlot ps) {
+    @Test
+    public void retrieveByParkingNamePlate_usingDerivedQuery_getBill() {
+
         // given
-        //TODO refactor using bi builder
-        Parking p = Parking.builder().nameUid(PARKING_NAME).build();
-        p.setPricingPolicy(ONLY_HOURS);
-        //TODO user default Ps builder
-        ps.setPosition("P");
-        ps.setVehicleType(CAR);
-        ps.setEngineType(ELECTRIC_50KW);
-        ps.setFloor(2);
-        ps.setParkingSlotState(FREE);
-        Reservation r = Reservation.builder().plate(PLATE).build();
-        Bill bill = Bill.builder().prepareDefault().build();
+        Reservation r = buildParkingSlotReservationBill(parking, "abc", 1, ELECTRIC_50KW).getReservation();
+        r.setPlate(PLATE);
 
-        //TODO change to
-        //setEachOther( p, ps, r, bill);
-        setEachOther(p, ps,
-                (a, b) -> a.setParkingSlots(Set.of(b)),
-                (b, a) -> b.setParking(a));
-        setEachOther(ps, r,
-                (a, b) -> a.setReservation(b),
-                (b, a) -> b.setParkingSlot(a));
-        setEachOther(bill, r,
-                (a, b) -> a.setReservation(b),
-                (b, a) -> b.setBill(a));
+        // when
+        entityManager.persistAndFlush(r);
 
-        entityManager.persist(p);
-        entityManager.persist(ps);
-        entityManager.persist(r);
-        entityManager.persistAndFlush(bill);
+        Bill billDb = billRepository
+                .findFirstByReservationParkingSlotParkingNameUidAndReservationPlate(PARKING_NAME, r.getPlate());
 
-        return bill;
+        assertEquals(billDb, r.getBill());
     }
 
-    private void setEachOther(Parking p, ParkingSlot ps, Reservation r, Bill bill) {
-        setEachOther(p, ps,
-                (a, b) -> a.setParkingSlots(Set.of(b)),
-                (b, a) -> b.setParking(a));
-        setEachOther(ps, r,
-                (a, b) -> a.setReservation(b),
-                (b, a) -> b.setParkingSlot(a));
-        setEachOther(bill, r,
-                (a, b) -> a.setReservation(b),
-                (b, a) -> b.setBill(a));
-    }
+    @Test
+    public void retrieveByParkingNamePlate_whenWrongParkingName_usingDerivedQuery_getNull() {
 
-    private <T, U> void setEachOther(T t, U u, BiConsumer<T, U> saveFirst, BiConsumer<U, T> saveSecond) {
+        // given
+        Reservation r = buildParkingSlotReservationBill(parking, "abc", 1, ELECTRIC_50KW).getReservation();
+        r.setPlate(PLATE);
 
-        saveFirst.accept(t, u);
-        saveSecond.accept(u, t);
+        // when
+        entityManager.persistAndFlush(r);
 
+        Bill billDb = billRepository.
+                findFirstByReservationParkingSlotParkingNameUidAndReservationPlate("Wrong", r.getPlate());
+
+        assertNull(billDb);
     }
 }

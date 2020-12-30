@@ -49,10 +49,6 @@ public class ApiError {
         this.path = retrievePath(request);
     }
 
-    public void addError(ApiSubError error) {
-        subErrors.add(error);
-    }
-
     public void addErrors(List<ApiSubError> errors) {
         subErrors.addAll(errors);
     }

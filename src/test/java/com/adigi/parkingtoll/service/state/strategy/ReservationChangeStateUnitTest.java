@@ -83,7 +83,7 @@ class ReservationChangeStateUnitTest {
     }
 
     @Test
-    public void givenRservation_whenChangePAYING_getReservationCorrectFields() {
+    public void givenReservation_whenChangePAYING_getReservationCorrectFields() {
 
         // given
         Reservation reservation = Reservation.builder().localPaymentDateTime(null).build();

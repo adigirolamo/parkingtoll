@@ -1,39 +1,20 @@
 package com.adigi.parkingtoll.model.persistence.entity;
 
 import com.adigi.parkingtoll.model.enums.EngineType;
-import com.adigi.parkingtoll.model.enums.PricingPolicy;
-import com.adigi.parkingtoll.test.annotation.DataJpaTestJunit;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
-import static com.adigi.parkingtoll.model.enums.ParkingSlotState.FREE;
-import static com.adigi.parkingtoll.model.enums.VehicleType.CAR;
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTestJunit
-public class ParkingSlotTest {
-
-    @Autowired
-    private TestEntityManager entityManager;
-
-    private Parking parking;
-
-    private final String POSITION = "POS1";
-    private final int FLOOR = 1;
+public class ParkingSlotTest extends BaseEntityTest {
 
     @BeforeEach
     public void setUp() {
-        parking = new Parking();
-        parking.setNameUid("PARKING_TEST");
-        parking.setPricingPolicy(PricingPolicy.INITIAL_FEE_PLUS_HOURS);
-        entityManager.persistAndFlush(parking);
+        init();
     }
 
     @Test
@@ -105,35 +86,4 @@ public class ParkingSlotTest {
         assertEqualLastParkingSlotFromList(parkingSlotsDb, engineType, POSITION);
     }
 
-    private List<ParkingSlot> retrieveParkingSlotByEngineTypeParameter(EngineType engineType) {
-
-        String jpql = "select c from ParkingSlot c where c.engineType = :engineType";
-
-        TypedQuery<ParkingSlot> query = entityManager.getEntityManager().createQuery(jpql, ParkingSlot.class);
-        query.setParameter("engineType", engineType);
-
-        return query.getResultList();
-    }
-
-    private void assertEqualLastParkingSlotFromList(List<ParkingSlot> parkingSlots, EngineType engineType, String position) {
-
-        assertTrue(!parkingSlots.isEmpty());
-        assertEquals(engineType, parkingSlots.get(parkingSlots.size() - 1).getEngineType());
-        assertEquals(position, parkingSlots.get(parkingSlots.size() - 1).getPosition());
-
-    }
-
-    private ParkingSlot buildParkingSlot(Parking parking, String position, Integer floor, EngineType engineType) {
-
-        ParkingSlot parkingSlot = new ParkingSlot();
-
-        parkingSlot.setParking(parking);
-        parkingSlot.setVehicleType(CAR);
-        parkingSlot.setPosition(position);
-        parkingSlot.setFloor(floor);
-        parkingSlot.setEngineType(engineType);
-        parkingSlot.setParkingSlotState(FREE);
-
-        return parkingSlot;
-    }
 }

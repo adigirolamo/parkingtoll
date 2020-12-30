@@ -13,23 +13,31 @@ import static com.adigi.parkingtoll.model.enums.ParkingSlotState.PAYING;
 
 @Service
 @Transactional
-public class BillService {
+public class BillService extends BaseControllerService{
 
-    @Autowired
     private BillRepository billRepository;
 
-    @Autowired
     private LocalDateTimeService timeService;
 
     @Autowired
-    private ParkingSlotStateService parkingSlotStateService;
+    public BillService(BillRepository billRepository, LocalDateTimeService timeService, ParkingSlotStateService parkingSlotStateService, ExceptionService exceptionService) {
+        this.billRepository = billRepository;
+        this.timeService = timeService;
+        this.parkingSlotStateService = parkingSlotStateService;
+        this.exceptionService = exceptionService;
+    }
 
-    @Autowired
-    private ExceptionService exceptionService;
-
+    /**
+     * Pay vehicle's bill. It changes the parking slot state to PAYED
+     *
+     * @param parkingNameUid parking unique name
+     * @param plate          plate of the vehicle that has payed the bill
+     * @return payed Bill
+     * @see ParkingSlotStateService check status changes Business Logic
+     */
     public Bill payBill(String parkingNameUid, String plate) {
 
-        Bill bill = billRepository.retrieveByParkingNameParkingSlotIdBillId(parkingNameUid, plate);
+        Bill bill = billRepository.retrieveByParkingNameAndPlate(parkingNameUid, plate);
 
         exceptionService.checkNotNull(bill,
                 String.format("Bill for car [%s] and parking [%s]", plate, parkingNameUid));
@@ -43,9 +51,10 @@ public class BillService {
      * Calculate Bill amount and return bill
      * To calculate the bill it is used the algorithm defined for the parking
      *
-     * @param parkingNameUid
-     * @param parkingSlotId
-     * @return
+     * @param parkingNameUid parking unique name
+     * @param plate          plate of the vehicle that request the bill
+     * @return bill that has to be payed
+     * @see ParkingSlotStateService check status changes Business Logic
      */
     public Bill calculateBillForLeavingCar(String parkingNameUid, String plate) {
 
@@ -59,15 +68,8 @@ public class BillService {
         return bill;
     }
 
-
     private Bill retrieveBill(String parkingNameUid, String plate) {
         return billRepository.findFirstByReservationParkingSlotParkingNameUidAndReservationPlate(parkingNameUid, plate);
     }
-//    private Bill retrieveBill(String parkingNameUid, Long parkingSlotId) {
-//        return billRepository.findFirstByReservationParkingSlotIdAndReservationParkingSlotParkingNameUid(
-//                parkingSlotId,
-//                parkingNameUid
-//        );
-//    }
 
 }
