@@ -1,10 +1,8 @@
 package com.adigi.parkingtoll.test.constant;
 
 public interface PresentationConstant {
-    public String CONTENT_TYPE = "application/json";
 
     // Request URI
-    public String BASE_URL = "http://localhost:8080";
     public String REQGET_GET_PARKING_SLOT = "/parkings/{parkingNameUid}/parkingslots";
     public String REQGET_GET_PARKING_SLOT_REQ_PARAM = "/parkings/{parkingNameUid}/parkingslots?plate={idplate}&engineType={enginetype}";
     public String REQPUT_UPDATE_PARKINGSLOT_TO_FREE = "/parkings/{parkingNameUid}/parkingslots/{parkingSlotId}";

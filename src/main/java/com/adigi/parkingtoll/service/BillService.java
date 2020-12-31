@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.adigi.parkingtoll.model.enums.ParkingSlotState.PAYED;
+import static com.adigi.parkingtoll.model.enums.ParkingSlotState.PAID;
 import static com.adigi.parkingtoll.model.enums.ParkingSlotState.PAYING;
 
 @Service
@@ -28,11 +28,11 @@ public class BillService extends BaseControllerService{
     }
 
     /**
-     * Pay vehicle's bill. It changes the parking slot state to PAYED
+     * Pay vehicle's bill. It changes the parking slot state to PAID
      *
      * @param parkingNameUid parking unique name
-     * @param plate          plate of the vehicle that has payed the bill
-     * @return payed Bill
+     * @param plate          plate of the vehicle that has paid the bill
+     * @return paid Bill
      * @see ParkingSlotStateService check status changes Business Logic
      */
     public Bill payBill(String parkingNameUid, String plate) {
@@ -42,7 +42,7 @@ public class BillService extends BaseControllerService{
         exceptionService.checkNotNull(bill,
                 String.format("Bill for car [%s] and parking [%s]", plate, parkingNameUid));
 
-        parkingSlotStateService.changeState(bill, PAYED, StateData.builder().build());
+        parkingSlotStateService.changeState(bill, PAID, StateData.builder().build());
 
         return bill;
     }
@@ -53,7 +53,7 @@ public class BillService extends BaseControllerService{
      *
      * @param parkingNameUid parking unique name
      * @param plate          plate of the vehicle that request the bill
-     * @return bill that has to be payed
+     * @return bill that has to be paid
      * @see ParkingSlotStateService check status changes Business Logic
      */
     public Bill calculateBillForLeavingCar(String parkingNameUid, String plate) {

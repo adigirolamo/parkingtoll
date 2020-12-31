@@ -44,7 +44,7 @@ class ParkingSlotStateServiceUnitTest {
 
         executeCheckChangeThrowException(FREE, FREE);
         executeCheckChangeThrowException(FREE, PAYING);
-        executeCheckChangeThrowException(FREE, PAYED);
+        executeCheckChangeThrowException(FREE, PAID);
     }
 
     @Test
@@ -58,7 +58,7 @@ class ParkingSlotStateServiceUnitTest {
 
         executeCheckChangeThrowException(RESERVED, FREE);
         executeCheckChangeThrowException(RESERVED, RESERVED);
-        executeCheckChangeThrowException(RESERVED, PAYED);
+        executeCheckChangeThrowException(RESERVED, PAID);
     }
 
     @Test
@@ -79,23 +79,23 @@ class ParkingSlotStateServiceUnitTest {
     public void givenFromPAYINGtoGoodStates_whenCheckChange_noExceptionThrow() {
 
         parkingSlotStateService.checkChange(PAYING, PAYING);
-        parkingSlotStateService.checkChange(PAYING, PAYED);
+        parkingSlotStateService.checkChange(PAYING, PAID);
     }
 
     @Test
-    public void givenFromPAYEDtoWrongStates_whenCheckChange_throwsWrongStateException() {
+    public void givenFromPAIDtoWrongStates_whenCheckChange_throwsWrongStateException() {
 
         when(stateMessageService.exceptionMessage(any(), any(), any())).thenReturn("");
 
-        executeCheckChangeThrowException(PAYED, PAYED);
-        executeCheckChangeThrowException(PAYED, PAYING);
-        executeCheckChangeThrowException(PAYED, RESERVED);
+        executeCheckChangeThrowException(PAID, PAID);
+        executeCheckChangeThrowException(PAID, PAYING);
+        executeCheckChangeThrowException(PAID, RESERVED);
     }
 
     @Test
-    public void givenFromPAYEDtoGoodStates_whenCheckChange_noExceptionThrow() {
+    public void givenFromPAIDtoGoodStates_whenCheckChange_noExceptionThrow() {
 
-        parkingSlotStateService.checkChange(PAYED, FREE);
+        parkingSlotStateService.checkChange(PAID, FREE);
     }
 
     //

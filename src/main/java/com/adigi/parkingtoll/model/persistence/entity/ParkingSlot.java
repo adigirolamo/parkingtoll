@@ -10,6 +10,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Parking slot entity.
+ * It represent a parking slot of a parking.
+ * <ul>
+ *     <li>A Parking slot has associated a reservation (One to One relation).</li>
+ *     <li>Reservation has associated a bill (One to One relation).</li>
+ * </ul>
+ * Therefore there is a direct link between a parking slot, its reservation and its bill
+ */
 @Entity
 @Table(
         uniqueConstraints =
@@ -27,15 +36,24 @@ public class ParkingSlot {
     @Column(name = "PARKINGSLOT_ID")
     private long id;
 
+    /**
+     * @see Parking
+     */
     @NotNull(message = "Parking is mandatory")
     @ManyToOne
     @JoinColumn(name = "PARKING_ID")
     private Parking parking;
 
+    /**
+     * Parking slot position
+     */
     @NotBlank(message = "Position is mandatory")
     @Column(name = "POSITION", length = 5, nullable = false)
     private String position;
 
+    /**
+     * In which floor is the parking slot
+     */
     @NotNull(message = "Floor is mandatory")
     @Column(name = "FLOOR")
     private Integer floor;
@@ -61,11 +79,14 @@ public class ParkingSlot {
     @ColumnDefault("false")
     private boolean reserved;
 
+    /**
+     * @see Reservation
+     */
     @OneToOne(mappedBy = "parkingSlot", cascade = {CascadeType.ALL})
     private Reservation reservation;
 
     /**
-     * It indicates the current state of the parking slot
+     * Current state of the parking slot
      *
      * @see ParkingSlotState
      */

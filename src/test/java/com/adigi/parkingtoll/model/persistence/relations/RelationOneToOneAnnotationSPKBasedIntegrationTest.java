@@ -48,7 +48,7 @@ public class RelationOneToOneAnnotationSPKBasedIntegrationTest extends BaseEntit
 
         assertNotNull(reservationDb);
         assertEquals(reservation.getPlate(), reservationDb.getPlate());
-        assertEquals(reservation.getPayed(), reservationDb.getPayed());
+        assertEquals(reservation.getPaid(), reservationDb.getPaid());
     }
 
     private void assertBill(Bill bill, Bill billDb) {
@@ -68,7 +68,7 @@ public class RelationOneToOneAnnotationSPKBasedIntegrationTest extends BaseEntit
 
     private void update(Reservation reservation) {
         reservation.setPlate("AAA");
-        reservation.setPayed(true);
+        reservation.setPaid(true);
 
     }
 

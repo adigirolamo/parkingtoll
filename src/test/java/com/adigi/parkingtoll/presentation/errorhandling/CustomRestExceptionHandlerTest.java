@@ -17,7 +17,8 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 
-import static com.adigi.parkingtoll.test.constant.PresentationConstant.*;
+import static com.adigi.parkingtoll.test.constant.PresentationConstant.REQGET_GET_PARKING_SLOT_REQ_PARAM;
+import static com.adigi.parkingtoll.test.constant.PresentationConstant.REQPUT_UPDATE_PARKINGSLOT_TO_FREE;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -58,24 +59,6 @@ class CustomRestExceptionHandlerTest {
 
     private void setupHttpEntity() {
         request = new HttpEntity(headers);
-    }
-
-    @Test
-    public void givenNotSupportedMediaType_whenRequest_getUNSUPPORTED_MEDIA_TYPE() {
-
-        // given
-        headers.setContentType(MediaType.APPLICATION_XML);
-
-        // when
-        ResponseEntity<Object> response = testRestTemplate.exchange(
-                REQGET_GET_PARKING_SLOT_REQ_PARAM,
-                HttpMethod.GET,
-                request,
-                Object.class,
-                "PARKING1", "plate", "GASOLINE"
-        );
-
-        assertThat(response.getStatusCode(), equalTo(UNSUPPORTED_MEDIA_TYPE));
     }
 
     @Test
@@ -216,7 +199,7 @@ class CustomRestExceptionHandlerTest {
         );
 
         // then
-        verifyStatusMessage(response, NOT_FOUND, "Not found ParkingSlot");
+        verifyStatusMessage(response, NOT_FOUND, "Not found free ParkingSlot");
     }
 
     private void verifyStatusMessage(ResponseEntity<Object> response, HttpStatus status, String message) {

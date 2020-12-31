@@ -45,8 +45,8 @@ public class ParkingSlotStateService {
     public void init() {
         allowedChanges.put(FREE, Set.of(RESERVED));
         allowedChanges.put(RESERVED, Set.of(PAYING));
-        allowedChanges.put(PAYING, Set.of(PAYING, PAYED));
-        allowedChanges.put(PAYED, Set.of(FREE));
+        allowedChanges.put(PAYING, Set.of(PAYING, PAID));
+        allowedChanges.put(PAID, Set.of(FREE));
 
     }
 

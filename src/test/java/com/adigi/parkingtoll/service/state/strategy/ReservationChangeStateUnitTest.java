@@ -40,14 +40,14 @@ class ReservationChangeStateUnitTest {
     @Test
     public void givenReservation_whenGetActualState_getCorrectState() {
         // given
-        ParkingSlot ps = ParkingSlot.builder().parkingSlotState(PAYED).build();
+        ParkingSlot ps = ParkingSlot.builder().parkingSlotState(PAID).build();
         Reservation reservation = Reservation.builder().parkingSlot(ps).build();
 
         // when
         ParkingSlotState actualState = reservationChangeState.getActualState(reservation);
 
         // then
-        assertThat(actualState, equalTo(PAYED));
+        assertThat(actualState, equalTo(PAID));
     }
 
     @Test
@@ -76,7 +76,7 @@ class ReservationChangeStateUnitTest {
 
         // then
         assertThat(reservation.getPlate(), equalTo(newPlate));
-        assertThat(reservation.getPayed(), is(false));
+        assertThat(reservation.getPaid(), is(false));
         assertThat(reservation.getLocalArriveDateTime(), equalTo(now));
         assertThat(reservation.getLocalDepartureDateTime(), nullValue());
         assertThat(reservation.getLocalPaymentDateTime(), nullValue());
@@ -96,15 +96,15 @@ class ReservationChangeStateUnitTest {
     }
 
     @Test
-    public void givenRservation_whenChangePAYED_getReservationCorrectFields() {
+    public void givenRservation_whenChangePAID_getReservationCorrectFields() {
 
         // given
-        Reservation reservation = Reservation.builder().payed(false).build();
+        Reservation reservation = Reservation.builder().paid(false).build();
 
         // when
-        reservationChangeState.change(reservation, PAYED, StateData.builder().build());
+        reservationChangeState.change(reservation, PAID, StateData.builder().build());
 
         // then
-        assertThat(reservation.getPayed(), is(true));
+        assertThat(reservation.getPaid(), is(true));
     }
 }

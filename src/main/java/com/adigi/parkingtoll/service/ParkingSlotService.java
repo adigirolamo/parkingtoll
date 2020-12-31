@@ -48,7 +48,7 @@ public class ParkingSlotService extends BaseControllerService {
                 parkingSlotRepository.findByParkingNameUidAndEngineTypeAndReservedFalse(parkingNameUid, engineType);
 
         exceptionService.checkNotNull(freeParkingSlots,
-                String.format("ParkingSlot of type [%s] and parking [%s]", engineType.toString(), parkingNameUid));
+                String.format("free ParkingSlot of type [%s] and parking [%s]", engineType.toString(), parkingNameUid));
 
         return updateFirstParkingSlotForIncomingCar(freeParkingSlots, plate);
     }

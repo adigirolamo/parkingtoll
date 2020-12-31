@@ -30,7 +30,7 @@ public class ReservationChangeState extends AbstractChangeState<Reservation> {
 
         changeStrategies.put(PAYING, (s, d) -> s.setLocalPaymentDateTime(d.getLocalPaymentDateTime()));
 
-        changeStrategies.put(PAYED, (s, d) -> s.setPayed(true));
+        changeStrategies.put(PAID, (s, d) -> s.setPaid(true));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ReservationChangeState extends AbstractChangeState<Reservation> {
     private void reservedStrategy(Reservation reservation, StateData data) {
 
         reservation.setPlate(data.getPlate());
-        reservation.setPayed(false);
+        reservation.setPaid(false);
         reservation.setLocalArriveDateTime(timeService.getNow());
         reservation.setLocalDepartureDateTime(null);
         reservation.setLocalPaymentDateTime(null);
